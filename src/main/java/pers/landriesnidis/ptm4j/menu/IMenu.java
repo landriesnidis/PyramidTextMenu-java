@@ -48,15 +48,22 @@ public interface IMenu {
 	void removeOptionByKeyword(String keyword);
 	
 	/**
-	 * 根据序号选择选项
+	 * 根据序号获取选项对象
 	 * @param index
 	 */
-	boolean selectOption(int index);
+	Option getOption(int index);
 	/**
-	 * 根据关键字选择选项
+	 * 根据关键字获取选项对象
 	 * @param optionKeyword
 	 */
-	boolean selectOption(String optionKeyword);
+	Option getOption(String optionKeyword);
+	
+	/**
+	 * 根据输入内容选择选项
+	 * @param text
+	 * @return
+	 */
+	boolean selectOption(String text);
 	
 	/**
 	 * 显示菜单信息
