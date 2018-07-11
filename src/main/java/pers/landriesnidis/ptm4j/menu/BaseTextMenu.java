@@ -33,7 +33,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 	}
 
 	public void onLoad(LoadEvent e) {
-		
+		showMenu();
 	}
 
 	public void onStop(StopEvent e) {
@@ -41,7 +41,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 	}
 
 	public void onBack(BackEvent e) {
-		
+		showMenu();
 	}
 
 	public void onDestroy() {
@@ -88,7 +88,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 		options.add(option);
 	}
 
-	public void addMenuOption(String keyword, Class<BaseTextMenu> classMenu) {
+	public void addMenuOption(String keyword, Class<? extends BaseTextMenu> classMenu) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(classMenu);
@@ -96,7 +96,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 		options.add(option);
 	}
 
-	public void addArgsMenuOption(String keyword, Class<BaseTextMenu> classMenu) {
+	public void addArgsMenuOption(String keyword, Class<? extends BaseTextMenu> classMenu) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(classMenu);
@@ -135,7 +135,18 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 	}
 
 	public Option getOption(String optionKeyword) {
-		
+		for(Option o:options){
+			String kw = o.getKeyWord();
+			if(o.getType()==ActionType.MENU){
+				if(kw.contentEquals(optionKeyword)){
+					return o;
+				}
+			}else if(o.getType()==ActionType.MENU_ARGS){
+				if(kw.contentEquals(optionKeyword.split(" ")[0])){
+					return o;
+				}
+			}
+		}
 		return null;
 	}
 
@@ -163,6 +174,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 	public boolean selectOption(String text) {
 		Option option = this.getOption(text);
 		if(option!=null){
+			option.execute(text);
 			return true;
 		}else{
 			int index = 0;

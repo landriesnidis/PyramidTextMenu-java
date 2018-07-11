@@ -17,6 +17,11 @@ public interface IScene {
 	 * @param args
 	 */
 	void startMenu(BaseTextMenu menu, Option option, String[] args);
+	
+	/**
+	 * 未经选项触发强制退回
+	 */
+	void returnToPreviousMenu();
 	/**
 	 * 返回到上一层菜单
 	 */

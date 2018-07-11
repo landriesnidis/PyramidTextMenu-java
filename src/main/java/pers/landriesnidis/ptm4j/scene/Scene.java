@@ -67,7 +67,31 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		menu.onLoad(le);
 	}
 
+	public void returnToPreviousMenu() {
+		// 检测是否已是根Menu
+		if (getRunningMenu() == getRootMenu())
+			return;
+
+		// 切换菜单
+		BaseTextMenu menu = getRunningMenu();
+		setRunningMenu(getRunningMenu().getPreviousMenu());
+
+		// 原Menu触发onDestroy事件
+		menu.onDestroy();
+		menu = null;
+
+		// 创建BackEvent事件对象
+		BackEvent e = new BackEvent();
+
+		// 上一级Menu触发onLoad事件
+		getRunningMenu().onBack(e);
+	}
+	
 	public void returnToPreviousMenu(Option option) {
+		// 检测是否已是根Menu
+		if (getRunningMenu() == getRootMenu())
+			return;
+
 		// 切换菜单
 		BaseTextMenu menu = getRunningMenu();
 		setRunningMenu(getRunningMenu().getPreviousMenu());
@@ -85,6 +109,10 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public void returnToPreviousMenu(Option option, String[] args) {
+		// 检测是否已是根Menu
+		if (getRunningMenu() == getRootMenu())
+			return;
+
 		// 切换菜单
 		BaseTextMenu menu = getRunningMenu();
 		setRunningMenu(getRunningMenu().getPreviousMenu());
@@ -110,12 +138,12 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		// 原Menu触发onDestroy事件
 		menu.onDestroy();
 		menu = null;
-				
+
 		// 创建BackEvent事件对象
 		BackEvent e = new BackEvent();
 		e.setKeyword(option.getKeyWord());
 		e.setType(ActionType.BACK_HOME);
-		
+
 		// 根Menu触发onLoad事件
 		getRunningMenu().onBack(e);
 	}
@@ -126,6 +154,11 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 
 	public void setRootMenu(BaseTextMenu rootMenu) {
 		this.rootMenu = rootMenu;
+		rootMenu.setScene(this);
+		if(getRunningMenu()==null){
+			setRunningMenu(rootMenu);
+			getRootMenu().onLoad(null);
+		}
 	}
 
 	public BaseTextMenu getRunningMenu() {
@@ -133,6 +166,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public void setRunningMenu(BaseTextMenu runningMenu) {
+		runningMenu.setScene(this);
 		this.runningMenu = runningMenu;
 	}
 

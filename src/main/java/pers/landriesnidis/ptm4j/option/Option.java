@@ -15,7 +15,7 @@ public class Option implements IOption {
 	// 文本类信息（对应ActionType:TEXT）
 	private String textContent;
 	// 触发的下级菜单（仅对应ActionType:MENU,MENU_ARGS）
-	private Class<BaseTextMenu> menuClass;
+	private Class<? extends BaseTextMenu> menuClass;
 
 	public Option(BaseTextMenu menuContext) {
 		this.menuContext = menuContext;
@@ -45,11 +45,11 @@ public class Option implements IOption {
 		this.textContent = textContent;
 	}
 
-	public Class<BaseTextMenu> getMenuClass() {
+	public Class<? extends BaseTextMenu> getMenuClass() {
 		return menuClass;
 	}
 
-	public void setMenuClass(Class<BaseTextMenu> menuClass) {
+	public void setMenuClass(Class<? extends BaseTextMenu> menuClass) {
 		this.menuClass = menuClass;
 	}
 
@@ -85,7 +85,7 @@ public class Option implements IOption {
 			break;
 		}
 	}
-	public static BaseTextMenu createTextMenuObject(Class<BaseTextMenu> menuClass){
+	public static BaseTextMenu createTextMenuObject(Class<? extends BaseTextMenu> menuClass){
 		try {
 			try {
 				return (BaseTextMenu) Class.forName(menuClass.getName()).newInstance();

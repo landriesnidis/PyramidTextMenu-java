@@ -19,13 +19,13 @@ public interface IMenu {
 	 * @param keyword
 	 * @param classMenu
 	 */
-	void addMenuOption(String keyword, Class<BaseTextMenu> classMenu);
+	void addMenuOption(String keyword, Class<? extends BaseTextMenu> classMenu);
 	/**
 	 * 添加可接受参数的菜单选项
 	 * @param keyword
 	 * @param classMenu
 	 */
-	void addArgsMenuOption(String keyword, Class<BaseTextMenu> classMenu);
+	void addArgsMenuOption(String keyword, Class<? extends BaseTextMenu> classMenu);
 	/**
 	 * 添加返回上一层菜单的选项
 	 * @param keyword
