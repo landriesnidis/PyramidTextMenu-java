@@ -81,4 +81,10 @@ public interface IMenu {
 	 * @param msg
 	 */
 	void showMessage(String msg);
+	/**
+	 * 当接收到用户输入的信息（当菜单设置允许接收信息时才会被执行）
+	 * @param text
+	 * @return
+	 */
+	boolean onTextReveived(String text);
 }

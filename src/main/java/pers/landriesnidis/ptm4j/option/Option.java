@@ -11,11 +11,12 @@ public class Option implements IOption {
 	private ActionType type;
 	// 所属的菜单对象
 	private BaseTextMenu menuContext;
-
 	// 文本类信息（对应ActionType:TEXT）
 	private String textContent;
 	// 触发的下级菜单（仅对应ActionType:MENU,MENU_ARGS）
 	private Class<? extends BaseTextMenu> menuClass;
+	// 准备执行的处理程序
+	private OptionHandler preparatoryExecuteHandler;
 
 	public Option(BaseTextMenu menuContext) {
 		this.menuContext = menuContext;
@@ -56,14 +57,21 @@ public class Option implements IOption {
 	public BaseTextMenu getMenuContext() {
 		return menuContext;
 	}
+	public void setPreparatoryExecuteHandler(OptionHandler preparatoryExecuteHandler) {
+		this.preparatoryExecuteHandler = preparatoryExecuteHandler;
+	}
+	public OptionHandler getPreparatoryExecuteHandler() {
+		return preparatoryExecuteHandler;
+	}
 
 	public void execute(String text) {
 		// 获取所处菜单
 		BaseTextMenu menu = this.getMenuContext();
 		// 获取所处场景
 		Scene scene = menu.getScene();
-
-		//根据动作类型执行操作
+		// 执行回调方法
+		this.preparatoryExecuteHandler.handle(text);
+		// 根据动作类型执行操作
 		switch (getType()) {
 		case TEXT:
 			scene.output(getTextContent());
@@ -83,6 +91,8 @@ public class Option implements IOption {
 		case RELOAD:
 
 			break;
+		default:
+			
 		}
 	}
 	public static BaseTextMenu createTextMenuObject(Class<? extends BaseTextMenu> menuClass){

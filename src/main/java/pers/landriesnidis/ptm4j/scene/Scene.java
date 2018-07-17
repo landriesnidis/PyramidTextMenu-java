@@ -18,9 +18,12 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	// 场景信息读取器
 	private SceneReader reader;
 
+	public Scene() {}
+	
 	public Scene(SceneReader reader) {
 		this.reader = reader;
 	}
+	
 
 	public void startMenu(BaseTextMenu menu, Option option) {
 		// 切换Menu
@@ -180,5 +183,9 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 
 	public void output(String text) {
 		reader.output(text);
+	}
+	
+	public void setReader(SceneReader reader) {
+		this.reader = reader;
 	}
 }
