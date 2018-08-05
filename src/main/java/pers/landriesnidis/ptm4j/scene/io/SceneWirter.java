@@ -6,5 +6,5 @@ public interface SceneWirter {
 	 * @param text
 	 * @return 信息无法识别则返回false
 	 */
-	boolean input(String text);
+	boolean input(String text, Object dataTag);
 }
