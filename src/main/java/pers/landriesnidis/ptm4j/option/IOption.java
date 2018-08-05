@@ -5,5 +5,5 @@ public interface IOption {
 	 * 选择项执行内容
 	 * @param text
 	 */
-	void execute(String text);
+	void execute(String text, Object dataTag);
 }

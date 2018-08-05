@@ -1,7 +1,7 @@
 package pers.landriesnidis.ptm4j.option;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
-import pers.landriesnidis.ptm4j.menu.BaseTextMenu;
+import pers.landriesnidis.ptm4j.menu.TextMenu;
 import pers.landriesnidis.ptm4j.scene.Scene;
 
 public class Option implements IOption {
@@ -10,15 +10,15 @@ public class Option implements IOption {
 	// 动作类型
 	private ActionType type;
 	// 所属的菜单对象
-	private BaseTextMenu menuContext;
+	private TextMenu menuContext;
 	// 文本类信息（对应ActionType:TEXT）
 	private String textContent;
 	// 触发的下级菜单（仅对应ActionType:MENU,MENU_ARGS）
-	private Class<? extends BaseTextMenu> menuClass;
+	private Class<? extends TextMenu> menuClass;
 	// 准备执行的处理程序
 	private OptionHandler preparatoryExecuteHandler;
 
-	public Option(BaseTextMenu menuContext) {
+	public Option(TextMenu menuContext) {
 		this.menuContext = menuContext;
 	}
 
@@ -46,15 +46,15 @@ public class Option implements IOption {
 		this.textContent = textContent;
 	}
 
-	public Class<? extends BaseTextMenu> getMenuClass() {
+	public Class<? extends TextMenu> getMenuClass() {
 		return menuClass;
 	}
 
-	public void setMenuClass(Class<? extends BaseTextMenu> menuClass) {
+	public void setMenuClass(Class<? extends TextMenu> menuClass) {
 		this.menuClass = menuClass;
 	}
 
-	public BaseTextMenu getMenuContext() {
+	public TextMenu getMenuContext() {
 		return menuContext;
 	}
 	public void setPreparatoryExecuteHandler(OptionHandler preparatoryExecuteHandler) {
@@ -64,17 +64,17 @@ public class Option implements IOption {
 		return preparatoryExecuteHandler;
 	}
 
-	public void execute(String text) {
+	public void execute(String text, Object dataTag) {
 		// 获取所处菜单
-		BaseTextMenu menu = this.getMenuContext();
+		TextMenu menu = this.getMenuContext();
 		// 获取所处场景
 		Scene scene = menu.getScene();
-		// 执行回调方法
-		this.preparatoryExecuteHandler.handle(text);
+		// 执行预处理回调方法
+		if(this.preparatoryExecuteHandler!=null && !this.preparatoryExecuteHandler.preparatoryExecuteHandle(text, this)) return;
 		// 根据动作类型执行操作
 		switch (getType()) {
 		case TEXT:
-			scene.output(getTextContent());
+			if(getTextContent()!=null)scene.output(getTextContent(), dataTag);
 			break;
 		case MENU:
 			scene.startMenu(createTextMenuObject(getMenuClass()), this);
@@ -95,10 +95,10 @@ public class Option implements IOption {
 			
 		}
 	}
-	public static BaseTextMenu createTextMenuObject(Class<? extends BaseTextMenu> menuClass){
+	public static TextMenu createTextMenuObject(Class<? extends TextMenu> menuClass){
 		try {
 			try {
-				return (BaseTextMenu) Class.forName(menuClass.getName()).newInstance();
+				return (TextMenu) Class.forName(menuClass.getName()).newInstance();
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

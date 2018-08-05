@@ -1,7 +1,7 @@
 package pers.landriesnidis.ptm4j.scene;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
-import pers.landriesnidis.ptm4j.menu.BaseTextMenu;
+import pers.landriesnidis.ptm4j.menu.TextMenu;
 import pers.landriesnidis.ptm4j.menu.events.BackEvent;
 import pers.landriesnidis.ptm4j.menu.events.LoadEvent;
 import pers.landriesnidis.ptm4j.menu.events.StopEvent;
@@ -12,9 +12,9 @@ import pers.landriesnidis.ptm4j.scene.io.SceneWirter;
 public class Scene implements IScene, SceneWirter, SceneReader {
 
 	// 根目录
-	private BaseTextMenu rootMenu;
+	private TextMenu rootMenu;
 	// 当前运行中的目录
-	private BaseTextMenu runningMenu;
+	private TextMenu runningMenu;
 	// 场景信息读取器
 	private SceneReader reader;
 
@@ -24,8 +24,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		this.reader = reader;
 	}
 	
-
-	public void startMenu(BaseTextMenu menu, Option option) {
+	public void startMenu(TextMenu menu, Option option) {
 		// 切换Menu
 		menu.setPreviousMenu(getRunningMenu());
 		setRunningMenu(menu);
@@ -47,7 +46,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		menu.onLoad(le);
 	}
 
-	public void startMenu(BaseTextMenu menu, Option option, String[] args) {
+	public void startMenu(TextMenu menu, Option option, String[] args) {
 		// 切换Menu
 		menu.setPreviousMenu(getRunningMenu());
 		setRunningMenu(menu);
@@ -76,7 +75,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 			return;
 
 		// 切换菜单
-		BaseTextMenu menu = getRunningMenu();
+		TextMenu menu = getRunningMenu();
 		setRunningMenu(getRunningMenu().getPreviousMenu());
 
 		// 原Menu触发onDestroy事件
@@ -96,7 +95,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 			return;
 
 		// 切换菜单
-		BaseTextMenu menu = getRunningMenu();
+		TextMenu menu = getRunningMenu();
 		setRunningMenu(getRunningMenu().getPreviousMenu());
 
 		// 原Menu触发onDestroy事件
@@ -117,7 +116,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 			return;
 
 		// 切换菜单
-		BaseTextMenu menu = getRunningMenu();
+		TextMenu menu = getRunningMenu();
 		setRunningMenu(getRunningMenu().getPreviousMenu());
 
 		// 原Menu触发onDestroy事件
@@ -135,7 +134,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 
 	public void returnToRootMenu(Option option) {
 		// 切换菜单
-		BaseTextMenu menu = getRunningMenu();
+		TextMenu menu = getRunningMenu();
 		setRunningMenu(getRootMenu());
 
 		// 原Menu触发onDestroy事件
@@ -151,11 +150,11 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		getRunningMenu().onBack(e);
 	}
 
-	public BaseTextMenu getRootMenu() {
+	public TextMenu getRootMenu() {
 		return rootMenu;
 	}
 
-	public void setRootMenu(BaseTextMenu rootMenu) {
+	public void setRootMenu(TextMenu rootMenu) {
 		this.rootMenu = rootMenu;
 		rootMenu.setScene(this);
 		if(getRunningMenu()==null){
@@ -164,11 +163,11 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		}
 	}
 
-	public BaseTextMenu getRunningMenu() {
+	public TextMenu getRunningMenu() {
 		return runningMenu;
 	}
 
-	public void setRunningMenu(BaseTextMenu runningMenu) {
+	public void setRunningMenu(TextMenu runningMenu) {
 		runningMenu.setScene(this);
 		this.runningMenu = runningMenu;
 	}
@@ -177,12 +176,12 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		return this;
 	}
 
-	public boolean input(String text) {
-		return runningMenu.selectOption(text);
+	public boolean input(String text, Object dataTag) {
+		return runningMenu.selectOption(text,dataTag);
 	}
 
-	public void output(String text) {
-		reader.output(text);
+	public void output(String text, Object dataTag) {
+		reader.output(text,dataTag);
 	}
 	
 	public void setReader(SceneReader reader) {

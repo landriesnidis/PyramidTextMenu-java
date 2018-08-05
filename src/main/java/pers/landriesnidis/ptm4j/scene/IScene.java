@@ -1,6 +1,6 @@
 package pers.landriesnidis.ptm4j.scene;
 
-import pers.landriesnidis.ptm4j.menu.BaseTextMenu;
+import pers.landriesnidis.ptm4j.menu.TextMenu;
 import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.io.SceneWirter;
 
@@ -10,13 +10,13 @@ public interface IScene {
 	 * 启动一个新菜单
 	 * @param menu
 	 */
-	void startMenu(BaseTextMenu menu, Option option);
+	void startMenu(TextMenu menu, Option option);
 	/**
 	 * 启动一个带参数的新菜单
 	 * @param option
 	 * @param args
 	 */
-	void startMenu(BaseTextMenu menu, Option option, String[] args);
+	void startMenu(TextMenu menu, Option option, String[] args);
 	
 	/**
 	 * 未经选项触发强制退回
