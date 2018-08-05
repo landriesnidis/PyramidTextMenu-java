@@ -1,20 +1,13 @@
 package pers.landriesnidis.ptm4j.menu.events;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
-import pers.landriesnidis.ptm4j.menu.BaseTextMenu;
+import pers.landriesnidis.ptm4j.menu.TextMenu;
 
 public class LoadEvent extends Event{
-	private String keyword;
 	private ActionType actionType;
 	private String [] args;
-	private BaseTextMenu menuContext;
+	private TextMenu menuContext;
 	
-	public String getKeyword() {
-		return keyword;
-	}
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
 	public ActionType getActionType() {
 		return actionType;
 	}
@@ -27,10 +20,10 @@ public class LoadEvent extends Event{
 	public void setArgs(String[] args) {
 		this.args = args;
 	}
-	public BaseTextMenu getMenuContext() {
+	public TextMenu getMenuContext() {
 		return menuContext;
 	}
-	public void setMenuContext(BaseTextMenu menuContext) {
+	public void setMenuContext(TextMenu menuContext) {
 		this.menuContext = menuContext;
 	}
 }
