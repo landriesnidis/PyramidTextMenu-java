@@ -10,22 +10,22 @@ import pers.landriesnidis.ptm4j.menu.events.StopEvent;
 import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.Scene;
 
-public class BaseTextMenu implements IMenuIifeCycle, IMenu{
+public class TextMenu implements IMenuIifeCycle, ITextMenu{
 
 	//所处的场景
 	private Scene scene;
 	//上一级菜单
-	private BaseTextMenu previousMenu;
+	private TextMenu previousMenu;
 	//选择项
 	private List<Option> options;
 	//标题
 	private String title = "Menu";
 	//文本内容
 	private String textContent;
-	// 是否允许接收文本（接收非选择项的文本内容，使用后则不能使用序号进行选择）
+	// 是否允许接收文本（接收非选择项的文本内容）
 	private boolean allowReveiceText;
 	private boolean allowShowSerialNumber;
-	public BaseTextMenu() {
+	public TextMenu() {
 		options = new ArrayList<Option>();
 		onCreate();
 	}
@@ -35,7 +35,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 	}
 
 	public void onLoad(LoadEvent e) {
-		showMenu();
+		showMenu(null);
 	}
 
 	public void onStop(StopEvent e) {
@@ -43,7 +43,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 	}
 
 	public void onBack(BackEvent e) {
-		showMenu();
+		showMenu(null);
 	}
 
 	public void onDestroy() {
@@ -58,11 +58,11 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 		this.scene = scene;
 	}
 
-	public BaseTextMenu getPreviousMenu() {
+	public TextMenu getPreviousMenu() {
 		return previousMenu;
 	}
 
-	public void setPreviousMenu(BaseTextMenu previousMenu) {
+	public void setPreviousMenu(TextMenu previousMenu) {
 		this.previousMenu = previousMenu;
 	}
 
@@ -106,7 +106,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 		options.add(option);
 	}
 
-	public void addMenuOption(String keyword, Class<? extends BaseTextMenu> classMenu) {
+	public void addMenuOption(String keyword, Class<? extends TextMenu> classMenu) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(classMenu);
@@ -114,7 +114,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 		options.add(option);
 	}
 
-	public void addArgsMenuOption(String keyword, Class<? extends BaseTextMenu> classMenu) {
+	public void addArgsMenuOption(String keyword, Class<? extends TextMenu> classMenu) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(classMenu);
@@ -150,18 +150,22 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 	}
 
 	public Option getOption(int index) {
-		if(index<1 || index>options.size()){
-			return null;
-		}else{
-			return options.get(index-1);
-		}
+//		if(index<1 || index>options.size()){
+//			return null;
+//		}else{
+//			return options.get(index-1);
+//		}
+		return options.get(index-1);
 	}
 
 	public Option getOption(String optionKeyword) {
-		for(Option o:options){
-			String kw = o.getKeyWord();
+		int size = options.size()-1;
+		String kw = null;
+		Option o = null;
+		for(int i=0;i<=size;++i){
+			o = options.get(size-i);
+			kw = o.getKeyWord();
 			if(o.getType()==ActionType.MENU_ARGS){
-				
 				if(kw.contentEquals(optionKeyword.split(" ")[0])){
 					return o;
 				}
@@ -174,7 +178,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 		return null;
 	}
 
-	public void showMenu() {
+	public void showMenu(Object dataTag) {
 		StringBuilder textMenu = new StringBuilder();
 		// 判断是否显示序号
 		if(isAllowShowSerialNumber()){
@@ -188,34 +192,34 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 			}
 		}
 		
-		showInfo(getTitle(),getTextContent(),textMenu.toString());
+		showInfo(getTitle(),getTextContent(),textMenu.toString(),dataTag);
 	}
 
-	public void showInfo(String title, String content, String menu) {
+	public void showInfo(String title, String content, String menu, Object dataTag) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("[%s]\n", title));
 		sb.append(String.format("%s\n", content));
 		sb.append("----------\n");
 		sb.append(menu);
-		showMessage(sb.toString());
+		showMessage(sb.toString(),dataTag);
 	}
 
-	public void showMessage(String msg) {
-		getScene().output(msg);
+	public void showMessage(String msg, Object dataTag) {
+		getScene().output(msg,dataTag);
 	}
 
-	public boolean selectOption(String text) {
+	public boolean selectOption(String text, Object dataTag) {
 		// 获取关键字与输入内容相符的选项对象
 		Option option = this.getOption(text);
 		// 判断选项是否存在
 		if(option!=null){
 			// 若存在则执行相应操作
-			option.execute(text);
+			option.execute(text, dataTag);
 			return true;
 		}else{
 			// 若不存在
 			// 判断菜单是否允许接收任意输入文本 且文本信息是否有效
-			if(isAllowReveiceText() && onTextReveived(text)){
+			if(isAllowReveiceText() && onTextReveived(text, dataTag)){
 				return true;
 			}
 			//执行序号
@@ -224,7 +228,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 				index = Integer.parseInt(text.trim());
 				option = this.getOption(index);
 				if(option!=null){
-					option.execute(text);
+					option.execute(text, dataTag);
 					return true;
 				}else{
 					return false;
@@ -235,7 +239,7 @@ public class BaseTextMenu implements IMenuIifeCycle, IMenu{
 		}
 	}
 
-	public boolean onTextReveived(String text) {
+	public boolean onTextReveived(String text, Object dataTag) {
 		return false;
 	}
 }
