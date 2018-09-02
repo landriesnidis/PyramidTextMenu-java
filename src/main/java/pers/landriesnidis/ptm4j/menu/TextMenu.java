@@ -135,6 +135,14 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		option.setType(ActionType.RELOAD);
 		options.add(option);
 	}
+	
+	public void addTextLine(String text){
+		Option option = new Option(this);
+		option.setKeyWord(text);
+		option.setType(ActionType.TEXT);
+		option.setOptional(false);
+		options.add(option);
+	}
 
 	public void removeOption(Option option) {
 		options.remove(option);
@@ -150,12 +158,13 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 	}
 
 	public Option getOption(int index) {
-//		if(index<1 || index>options.size()){
-//			return null;
-//		}else{
-//			return options.get(index-1);
-//		}
-		return options.get(index-1);
+		int invalidItemCount = 0;
+		for(int i=0;i<index+invalidItemCount;i++){
+			if(!options.get(i).getOptional()){
+				++invalidItemCount;
+			}
+		}
+		return options.get(index-1+invalidItemCount);
 	}
 
 	public Option getOption(String optionKeyword) {
@@ -177,6 +186,10 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		}
 		return null;
 	}
+	
+	public Option getLastOption() {
+		return options.get(options.size()-1);
+	}
 
 	public void showMenu(Object dataTag) {
 		StringBuilder textMenu = new StringBuilder();
@@ -184,11 +197,17 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		if(isAllowShowSerialNumber()){
 			int i=1;
 			for(Option o:options){
-				textMenu.append(String.format(" [%d] %s\n", i++, o.getKeyWord()));
+				if(o.getOptional())
+					textMenu.append(String.format(" [%d] %s\n", i++, o.getKeyWord()));
+				else
+					textMenu.append(String.format("%s\n", o.getKeyWord()));
 			}
 		}else{
 			for(Option o:options){
-				textMenu.append(String.format(" · %s\n", o.getKeyWord()));
+				if(o.getOptional())
+					textMenu.append(String.format(" · %s\n", o.getKeyWord()));
+				else
+					textMenu.append(String.format("%s\n", o.getKeyWord()));
 			}
 		}
 		

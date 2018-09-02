@@ -37,6 +37,11 @@ public interface ITextMenu {
 	 */
 	void addReloadOption(String keyword);
 	/**
+	 * 添加一行不能被选的文本
+	 * @param text
+	 */
+	public void addTextLine(String text);
+	/**
 	 * 移除选项
 	 * @param option
 	 */
@@ -57,6 +62,11 @@ public interface ITextMenu {
 	 * @param optionKeyword
 	 */
 	Option getOption(String optionKeyword);
+	/**
+	 * 获取选项组中最后一条选项对象
+	 * @return
+	 */
+	Option getLastOption();
 	
 	/**
 	 * 根据输入内容选择选项

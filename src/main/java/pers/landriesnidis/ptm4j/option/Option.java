@@ -17,6 +17,8 @@ public class Option implements IOption {
 	private Class<? extends TextMenu> menuClass;
 	// 准备执行的处理程序
 	private OptionHandler preparatoryExecuteHandler;
+	// 是否可选
+	private Boolean optional = true;
 
 	public Option(TextMenu menuContext) {
 		this.menuContext = menuContext;
@@ -57,11 +59,21 @@ public class Option implements IOption {
 	public TextMenu getMenuContext() {
 		return menuContext;
 	}
+	
 	public void setPreparatoryExecuteHandler(OptionHandler preparatoryExecuteHandler) {
 		this.preparatoryExecuteHandler = preparatoryExecuteHandler;
 	}
+	
 	public OptionHandler getPreparatoryExecuteHandler() {
 		return preparatoryExecuteHandler;
+	}
+	
+	public Boolean getOptional() {
+		return optional;
+	}
+	
+	public void setOptional(Boolean optional) {
+		this.optional = optional;
 	}
 
 	public void execute(String text, Object dataTag) {
@@ -69,8 +81,10 @@ public class Option implements IOption {
 		TextMenu menu = this.getMenuContext();
 		// 获取所处场景
 		Scene scene = menu.getScene();
+		// 检查可用状态
+		if(!this.optional)return;
 		// 执行预处理回调方法
-		if(this.preparatoryExecuteHandler!=null && !this.preparatoryExecuteHandler.preparatoryExecuteHandle(text, this)) return;
+		if(this.preparatoryExecuteHandler!=null && !this.preparatoryExecuteHandler.preparatoryExecuteHandle(text,dataTag, this)) return;
 		// 根据动作类型执行操作
 		switch (getType()) {
 		case TEXT:

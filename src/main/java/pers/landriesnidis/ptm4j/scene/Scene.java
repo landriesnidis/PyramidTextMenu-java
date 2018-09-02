@@ -25,25 +25,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 	
 	public void startMenu(TextMenu menu, Option option) {
-		// 切换Menu
-		menu.setPreviousMenu(getRunningMenu());
-		setRunningMenu(menu);
-
-		// 创建StopEvent事件
-		StopEvent se = new StopEvent();
-		se.setKeyword(option.getKeyWord());
-
-		// 原Menu触发onStop事件
-		menu.getPreviousMenu().onStop(se);
-
-		// 创建LoadEvent事件对象
-		LoadEvent le = new LoadEvent();
-		le.setActionType(option.getType());
-		le.setKeyword(option.getKeyWord());
-		le.setMenuContext(menu.getPreviousMenu());
-
-		// 新Menu触发onLoad事件
-		menu.onLoad(le);
+		startMenu(menu, option, null);
 	}
 
 	public void startMenu(TextMenu menu, Option option, String[] args) {
