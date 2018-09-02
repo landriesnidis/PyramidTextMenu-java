@@ -18,12 +18,13 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	// 场景信息读取器
 	private SceneReader reader;
 
-	public Scene() {}
-	
+	public Scene() {
+	}
+
 	public Scene(SceneReader reader) {
 		this.reader = reader;
 	}
-	
+
 	public void startMenu(TextMenu menu, Option option) {
 		startMenu(menu, option, null);
 	}
@@ -70,7 +71,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		// 上一级Menu触发onLoad事件
 		getRunningMenu().onBack(e);
 	}
-	
+
 	public void returnToPreviousMenu(Option option) {
 		// 检测是否已是根Menu
 		if (getRunningMenu() == getRootMenu())
@@ -132,6 +133,26 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		getRunningMenu().onBack(e);
 	}
 
+	public void reloadMenu() {
+		
+		TextMenu oldMenu = getRunningMenu();
+		TextMenu newMenu = Option.createTextMenuObject(oldMenu.getClass());
+		
+		// 切换Menu
+		newMenu.setPreviousMenu(oldMenu.getPreviousMenu());
+		setRunningMenu(newMenu);
+
+		// 创建LoadEvent事件对象
+		LoadEvent le = new LoadEvent();
+		le.setActionType(ActionType.RELOAD);
+		le.setKeyword(null);
+		le.setMenuContext(newMenu.getPreviousMenu());
+		le.setArgs(null);
+
+		// 新Menu触发onLoad事件
+		newMenu.onLoad(le);
+	}
+
 	public TextMenu getRootMenu() {
 		return rootMenu;
 	}
@@ -139,7 +160,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	public void setRootMenu(TextMenu rootMenu) {
 		this.rootMenu = rootMenu;
 		rootMenu.setScene(this);
-		if(getRunningMenu()==null){
+		if (getRunningMenu() == null) {
 			setRunningMenu(rootMenu);
 			getRootMenu().onLoad(null);
 		}
@@ -159,13 +180,13 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public boolean input(String text, Object dataTag) {
-		return runningMenu.selectOption(text,dataTag);
+		return runningMenu.selectOption(text, dataTag);
 	}
 
 	public void output(String text, Object dataTag) {
-		reader.output(text,dataTag);
+		reader.output(text, dataTag);
 	}
-	
+
 	public void setReader(SceneReader reader) {
 		this.reader = reader;
 	}

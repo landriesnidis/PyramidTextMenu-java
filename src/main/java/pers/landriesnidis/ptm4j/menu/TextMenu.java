@@ -193,24 +193,21 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 
 	public void showMenu(Object dataTag) {
 		StringBuilder textMenu = new StringBuilder();
-		// 判断是否显示序号
-		if(isAllowShowSerialNumber()){
-			int i=1;
-			for(Option o:options){
-				if(o.getOptional())
-					textMenu.append(String.format(" [%d] %s\n", i++, o.getKeyWord()));
-				else
-					textMenu.append(String.format("%s\n", o.getKeyWord()));
+		int i=1;
+		// 遍历选项
+		for(Option o:options){
+			// 判断选项的可用性
+			if(!o.getOptional()){
+				textMenu.append(String.format("%s\n", o.getKeyWord()));
+				break;
 			}
-		}else{
-			for(Option o:options){
-				if(o.getOptional())
-					textMenu.append(String.format(" · %s\n", o.getKeyWord()));
-				else
-					textMenu.append(String.format("%s\n", o.getKeyWord()));
+			// 判断是否启用序号
+			if(isAllowShowSerialNumber()){
+				textMenu.append(String.format(" [%d] %s\n", i++, o.getKeyWord()));
+			}else{
+				textMenu.append(String.format(" · %s\n", o.getKeyWord()));
 			}
 		}
-		
 		showInfo(getTitle(),getTextContent(),textMenu.toString(),dataTag);
 	}
 

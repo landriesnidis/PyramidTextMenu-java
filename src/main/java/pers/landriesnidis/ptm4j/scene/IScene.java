@@ -35,6 +35,11 @@ public interface IScene {
 	 * 返回根目录
 	 */
 	void returnToRootMenu(Option option);
+	/**
+	 * 重新加载当前菜单
+	 * @param option
+	 */
+	void reloadMenu();
 	
 	/**
 	 * 获取场景信息写入器

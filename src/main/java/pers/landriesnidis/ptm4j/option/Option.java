@@ -103,12 +103,13 @@ public class Option implements IOption {
 			scene.returnToRootMenu(this);
 			break;
 		case RELOAD:
-
+			scene.reloadMenu();
 			break;
 		default:
 			
 		}
 	}
+	
 	public static TextMenu createTextMenuObject(Class<? extends TextMenu> menuClass){
 		try {
 			try {
