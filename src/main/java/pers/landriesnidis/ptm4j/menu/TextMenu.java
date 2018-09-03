@@ -199,7 +199,7 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 			// 判断选项的可用性
 			if(!o.getOptional()){
 				textMenu.append(String.format("%s\n", o.getKeyWord()));
-				break;
+				continue;
 			}
 			// 判断是否启用序号
 			if(isAllowShowSerialNumber()){
