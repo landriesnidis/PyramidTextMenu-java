@@ -5,6 +5,6 @@ public enum ActionType {
 	MENU,		//打开指定菜单
 	MENU_ARGS,	//打开指定菜单并传入参数
 	BACK,		//返回上一级应菜单（销毁当前菜单）
-	BACK_HOME,	//返回首页
+	BACK_ROOT,	//返回到根菜单首页
 	RELOAD		//重新加载当前菜单
 }

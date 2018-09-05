@@ -1,5 +1,7 @@
 package pers.landriesnidis.ptm4j.scene;
 
+import java.util.LinkedList;
+
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.menu.TextMenu;
 import pers.landriesnidis.ptm4j.menu.events.BackEvent;
@@ -12,10 +14,13 @@ import pers.landriesnidis.ptm4j.scene.io.SceneWirter;
 
 public class Scene implements IScene, SceneWirter, SceneReader {
 
-	// 根目录
-	private TextMenu rootMenu;
-	// 当前运行中的目录
-	private TextMenu runningMenu;
+//	// 根目录
+//	private TextMenu rootMenu;
+//	// 当前运行中的目录
+//	private TextMenu runningMenu;
+	
+	private LinkedList<TextMenu> textMenuLinkedList = null;
+	
 	// 场景信息读取器
 	private SceneReader reader;
 
@@ -31,8 +36,17 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public void startMenu(TextMenu menu, Option option, String[] args) {
+		
+		// 保存原运行中的Menu
+		TextMenu previousMenu = getRunningMenu();
+				
+		// 避免在菜单组中出现环
+		// 如果新跳转的菜单对象存在于菜单组中，则从菜单组中删除后续(包含新菜单对象)
+		if(textMenuLinkedList.contains(menu)){
+			while(menu != textMenuLinkedList.removeLast());
+		}
+		
 		// 切换Menu
-		menu.setPreviousMenu(getRunningMenu());
 		setRunningMenu(menu);
 
 		// 创建StopEvent对象
@@ -40,13 +54,13 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		stopEvent.setKeyword(option.getKeyWord());
 
 		// 原Menu触发onStop事件
-		menu.getPreviousMenu().onStop(stopEvent);
+		previousMenu.onStop(stopEvent);
 
 		// 创建LoadEvent对象
 		LoadEvent loadEvent = new LoadEvent();
 		loadEvent.setActionType(option.getType());
 		loadEvent.setKeyword(option.getKeyWord());
-		loadEvent.setMenuContext(menu.getPreviousMenu());
+		loadEvent.setPreviousMenu(previousMenu);
 
 		// 新Menu触发onLoad事件
 		menu.onLoad(loadEvent);
@@ -72,10 +86,9 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		// 检测是否已是根Menu
 		if (getRunningMenu() == getRootMenu())
 			return;
-
-		// 切换菜单
-		TextMenu menu = getRunningMenu();
-		setRunningMenu(getRunningMenu().getPreviousMenu());
+		
+		// 切换至上一级菜单并保存原运行中的Menu
+		TextMenu menu = textMenuLinkedList.removeLast();
 
 		// 原Menu触发onDestroy事件
 		menu.onDestroy();
@@ -90,7 +103,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 			}
 		}
 
-		// 上一级Menu触发onLoad事件
+		// 重回运行状态的Menu触发onBack事件
 		getRunningMenu().onBack(e);
 
 		// 创建StartEvent对象
@@ -103,18 +116,26 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public void returnToRootMenu(Option option) {
+		
+		// 如果当前已处于根菜单则什么也不做
+		if(textMenuLinkedList.size()<=1)return;
+		
 		// 切换菜单
 		TextMenu menu = getRunningMenu();
-		setRunningMenu(getRootMenu());
 
 		// 原Menu触发onDestroy事件
 		menu.onDestroy();
 		menu = null;
+		
+		// 返回至根菜单
+		TextMenu rootMenu = getRootMenu();
+		textMenuLinkedList.clear();
+		textMenuLinkedList.add(rootMenu);
 
 		// 创建BackEvent事件对象
 		BackEvent e = new BackEvent();
 		e.setKeyword(option.getKeyWord());
-		e.setType(ActionType.BACK_HOME);
+		e.setType(ActionType.BACK_ROOT);
 
 		// 根Menu触发onLoad事件
 		getRunningMenu().onBack(e);
@@ -129,19 +150,17 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public void reloadMenu() {
-
-		TextMenu oldMenu = getRunningMenu();
+		// 保存原Menu和上一层Menu，根据原Menu创建新的同类型Menu并替换
+		TextMenu oldMenu = textMenuLinkedList.removeLast();
+		TextMenu previousMenu = textMenuLinkedList.getLast();
 		TextMenu newMenu = Option.createTextMenuObject(oldMenu.getClass());
-
-		// 切换Menu
-		newMenu.setPreviousMenu(oldMenu.getPreviousMenu());
 		setRunningMenu(newMenu);
 
 		// 创建LoadEvent事件对象
 		LoadEvent le = new LoadEvent();
 		le.setActionType(ActionType.RELOAD);
 		le.setKeyword(null);
-		le.setMenuContext(newMenu.getPreviousMenu());
+		le.setPreviousMenu(previousMenu);
 
 		// 新Menu触发onLoad事件
 		newMenu.onLoad(le);
@@ -156,25 +175,25 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public TextMenu getRootMenu() {
-		return rootMenu;
+		return textMenuLinkedList.getFirst();
 	}
 
 	public void setRootMenu(TextMenu rootMenu) {
-		this.rootMenu = rootMenu;
+		textMenuLinkedList.clear();
+		textMenuLinkedList.add(rootMenu);
 		rootMenu.setScene(this);
-		if (getRunningMenu() == null) {
-			setRunningMenu(rootMenu);
-			getRootMenu().onLoad(null);
-		}
+
+		rootMenu.onLoad(new LoadEvent());
+		rootMenu.onStart(new StartEvent());
 	}
 
 	public TextMenu getRunningMenu() {
-		return runningMenu;
+		return textMenuLinkedList.getLast();
 	}
 
 	public void setRunningMenu(TextMenu runningMenu) {
 		runningMenu.setScene(this);
-		this.runningMenu = runningMenu;
+		textMenuLinkedList.add(runningMenu);
 	}
 
 	public SceneWirter getSceneWirter() {
@@ -182,7 +201,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	}
 
 	public boolean input(String text, Object dataTag) {
-		return runningMenu.selectOption(text, dataTag);
+		return getRunningMenu().selectOption(text, dataTag);
 	}
 
 	public void output(String text, Object dataTag) {

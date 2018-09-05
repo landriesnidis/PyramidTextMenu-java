@@ -99,7 +99,7 @@ public class Option implements IOption {
 		case BACK:
 			scene.returnToPreviousMenu(this);
 			break;
-		case BACK_HOME:
+		case BACK_ROOT:
 			scene.returnToRootMenu(this);
 			break;
 		case RELOAD:

@@ -5,8 +5,12 @@ import pers.landriesnidis.ptm4j.menu.TextMenu;
 
 public class LoadEvent extends Event{
 	private ActionType actionType;
-	private String [] args;
-	private TextMenu menuContext;
+	private TextMenu previousMenu;
+	
+	public LoadEvent() {}
+	public LoadEvent(ActionType actionType) {
+		this.actionType = actionType;
+	}
 	
 	public ActionType getActionType() {
 		return actionType;
@@ -15,9 +19,9 @@ public class LoadEvent extends Event{
 		this.actionType = actionType;
 	}
 	public TextMenu getMenuContext() {
-		return menuContext;
+		return previousMenu;
 	}
-	public void setMenuContext(TextMenu menuContext) {
-		this.menuContext = menuContext;
+	public void setPreviousMenu(TextMenu previousMenu) {
+		this.previousMenu = previousMenu;
 	}
 }

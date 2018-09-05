@@ -16,7 +16,7 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 	//所处的场景
 	private Scene scene;
 	//上一级菜单
-	private TextMenu previousMenu;
+//	private TextMenu previousMenu;
 	//选择项
 	private List<Option> options;
 	//标题
@@ -63,13 +63,13 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		this.scene = scene;
 	}
 
-	public TextMenu getPreviousMenu() {
-		return previousMenu;
-	}
+//	public TextMenu getPreviousMenu() {
+//		return previousMenu;
+//	}
 
-	public void setPreviousMenu(TextMenu previousMenu) {
-		this.previousMenu = previousMenu;
-	}
+//	public void setPreviousMenu(TextMenu previousMenu) {
+//		this.previousMenu = previousMenu;
+//	}
 
 	public void addOption(Option option) {
 		options.add(option);

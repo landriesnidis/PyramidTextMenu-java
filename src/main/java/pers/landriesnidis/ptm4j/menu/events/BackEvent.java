@@ -4,7 +4,12 @@ import pers.landriesnidis.ptm4j.enums.ActionType;
 
 public class BackEvent extends Event{
 	private String[] args;
-	private ActionType type = ActionType.BACK;
+	private ActionType actionType = ActionType.BACK;
+	
+	public BackEvent() {}
+	public BackEvent(ActionType actionType) {
+		this.actionType = actionType;
+	}
 	
 	public String[] getArgs() {
 		return args;
@@ -13,9 +18,9 @@ public class BackEvent extends Event{
 		this.args = args;
 	}
 	public ActionType getType() {
-		return type;
+		return actionType;
 	}
 	public void setType(ActionType type) {
-		this.type = type;
+		this.actionType = type;
 	}
 }
