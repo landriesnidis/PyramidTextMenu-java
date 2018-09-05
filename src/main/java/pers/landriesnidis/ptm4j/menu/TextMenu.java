@@ -6,6 +6,7 @@ import java.util.List;
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.menu.events.BackEvent;
 import pers.landriesnidis.ptm4j.menu.events.LoadEvent;
+import pers.landriesnidis.ptm4j.menu.events.StartEvent;
 import pers.landriesnidis.ptm4j.menu.events.StopEvent;
 import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.Scene;
@@ -35,6 +36,10 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 	}
 
 	public void onLoad(LoadEvent e) {
+		
+	}
+	
+	public void onStart(StartEvent e) {
 		showMenu(null);
 	}
 
@@ -43,7 +48,7 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 	}
 
 	public void onBack(BackEvent e) {
-		showMenu(null);
+
 	}
 
 	public void onDestroy() {
@@ -258,4 +263,5 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 	public boolean onTextReveived(String text, Object dataTag) {
 		return false;
 	}
+
 }
