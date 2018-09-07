@@ -39,7 +39,7 @@ public interface IScene {
 	 * 重新加载当前菜单
 	 * @param option
 	 */
-	void reloadMenu();
+	void reloadMenu(String[] args);
 	
 	/**
 	 * 获取场景信息写入器
@@ -59,6 +59,16 @@ public interface IScene {
 	 * @param rootMenu
 	 */
 	void setRootMenu(TextMenu rootMenu);
+	
+	/**
+	 * 获取当前正在运行的菜单
+	 * @return
+	 */
 	TextMenu getRunningMenu();
+	
+	/**
+	 * 设置一个菜单，使其处于运行状态
+	 * @param runningMenu
+	 */
 	void setRunningMenu(TextMenu runningMenu);
 }

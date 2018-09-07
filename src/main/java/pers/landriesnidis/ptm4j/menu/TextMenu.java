@@ -13,19 +13,20 @@ import pers.landriesnidis.ptm4j.scene.Scene;
 
 public class TextMenu implements IMenuIifeCycle, ITextMenu{
 
-	//所处的场景
+	// 所处的场景
 	private Scene scene;
-	//上一级菜单
-//	private TextMenu previousMenu;
-	//选择项
+	// 选择项
 	private List<Option> options;
-	//标题
+	// 标题
 	private String title = "Menu";
-	//文本内容
+	// 文本内容
 	private String textContent;
+	// 菜单信息读取器
+	private TextMenuReader reader = null;
 	// 是否允许接收文本（接收非选择项的文本内容）
 	private boolean allowReveiceText;
 	private boolean allowShowSerialNumber;
+	
 	public TextMenu() {
 		options = new ArrayList<Option>();
 		onCreate();
@@ -62,14 +63,6 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
-
-//	public TextMenu getPreviousMenu() {
-//		return previousMenu;
-//	}
-
-//	public void setPreviousMenu(TextMenu previousMenu) {
-//		this.previousMenu = previousMenu;
-//	}
 
 	public void addOption(Option option) {
 		options.add(option);
@@ -226,7 +219,7 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 	}
 
 	public void showMessage(String msg, Object dataTag) {
-		getScene().output(msg,dataTag);
+		getScene().output(msg, getTextMenuReader(), dataTag);
 	}
 
 	public boolean selectOption(String text, Object dataTag) {
@@ -255,6 +248,7 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 					return false;
 				}
 			}catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}	
 		}
@@ -262,6 +256,26 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 
 	public boolean onTextReveived(String text, Object dataTag) {
 		return false;
+	}
+
+	public TextMenuReader getTextMenuReader() {
+		if(reader==null){
+			reader = new TextMenuReader() {
+				
+				public String getMenuTitle() {
+					return title;
+				}
+				
+				public String getMenuTextContent() {
+					return textContent;
+				}
+				
+				public List<Option> getMenuOptions() {
+					return options;
+				}
+			};
+		}
+		return reader;
 	}
 
 }

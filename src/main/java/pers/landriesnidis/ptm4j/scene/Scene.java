@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.menu.TextMenu;
+import pers.landriesnidis.ptm4j.menu.TextMenuReader;
 import pers.landriesnidis.ptm4j.menu.events.BackEvent;
 import pers.landriesnidis.ptm4j.menu.events.LoadEvent;
 import pers.landriesnidis.ptm4j.menu.events.StartEvent;
@@ -19,7 +20,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 //	// 当前运行中的目录
 //	private TextMenu runningMenu;
 	
-	private LinkedList<TextMenu> textMenuLinkedList = null;
+	private LinkedList<TextMenu> textMenuLinkedList = new LinkedList<TextMenu>();
 	
 	// 场景信息读取器
 	private SceneReader reader;
@@ -95,21 +96,25 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		menu = null;
 
 		// 创建BackEvent事件对象
-		BackEvent e = new BackEvent();
+		BackEvent backEvent = new BackEvent();
 		if (option != null) {
-			e.setKeyword(option.getKeyWord());
+			backEvent.setKeyword(option.getKeyWord());
 			if (args != null) {
-				e.setArgs(args);
+				backEvent.setArgs(args);
 			}
 		}
 
 		// 重回运行状态的Menu触发onBack事件
-		getRunningMenu().onBack(e);
+		getRunningMenu().onBack(backEvent);
 
 		// 创建StartEvent对象
 		StartEvent startEvent = new StartEvent();
-		startEvent.setActionType(option.getType());
-		startEvent.setArgs(args);
+		if (option != null) {
+			startEvent.setActionType(option.getType());
+			if (args != null) {
+				startEvent.setArgs(args);
+			}
+		}
 
 		// 新Menu触发onStart事件
 		getRunningMenu().onStart(startEvent);
@@ -149,7 +154,7 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 		getRunningMenu().onStart(startEvent);
 	}
 
-	public void reloadMenu() {
+	public void reloadMenu(String[] args) {
 		// 保存原Menu和上一层Menu，根据原Menu创建新的同类型Menu并替换
 		TextMenu oldMenu = textMenuLinkedList.removeLast();
 		TextMenu previousMenu = textMenuLinkedList.getLast();
@@ -203,9 +208,9 @@ public class Scene implements IScene, SceneWirter, SceneReader {
 	public boolean input(String text, Object dataTag) {
 		return getRunningMenu().selectOption(text, dataTag);
 	}
-
-	public void output(String text, Object dataTag) {
-		reader.output(text, dataTag);
+	
+	public void output(String text, TextMenuReader textMenuReader, Object dataTag) {
+		this.reader.output(text, textMenuReader, dataTag);
 	}
 
 	public void setReader(SceneReader reader) {

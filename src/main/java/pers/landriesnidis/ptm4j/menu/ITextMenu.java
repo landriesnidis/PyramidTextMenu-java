@@ -97,4 +97,9 @@ public interface ITextMenu {
 	 * @return
 	 */
 	boolean onTextReveived(String text, Object dataTag);
+	/**
+	 * 获取菜单信息读取器
+	 * @return
+	 */
+	TextMenuReader getTextMenuReader();
 }

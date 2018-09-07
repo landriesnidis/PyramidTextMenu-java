@@ -88,7 +88,7 @@ public class Option implements IOption {
 		// 根据动作类型执行操作
 		switch (getType()) {
 		case TEXT:
-			if(getTextContent()!=null)scene.output(getTextContent(), dataTag);
+			if(getTextContent()!=null)scene.output(getTextContent(), menu.getTextMenuReader(), dataTag);
 			break;
 		case MENU:
 			scene.startMenu(createTextMenuObject(getMenuClass()), this);
@@ -103,7 +103,7 @@ public class Option implements IOption {
 			scene.returnToRootMenu(this);
 			break;
 		case RELOAD:
-			scene.reloadMenu();
+			scene.reloadMenu(text.split(" "));
 			break;
 		default:
 			
