@@ -157,7 +157,7 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 
 	public Option getOption(int index) {
 		int invalidItemCount = 0;
-		for(int i=0;i<index+invalidItemCount;i++){
+		for(int i=0;i<index+invalidItemCount;++i){
 			if(!options.get(i).getOptional()){
 				++invalidItemCount;
 			}
@@ -236,21 +236,23 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 			if(isAllowReveiceText() && onTextReveived(text, dataTag)){
 				return true;
 			}
-			//执行序号
-			int index = 0;
-			try{
-				index = Integer.parseInt(text.trim());
-				option = this.getOption(index);
-				if(option!=null){
-					option.execute(text, dataTag);
-					return true;
-				}else{
+			if(isAllowShowSerialNumber()){
+				//执行序号
+				int index = 0;
+				try{
+					index = Integer.parseInt(text.trim());
+					option = this.getOption(index);
+					if(option!=null){
+						option.execute(text, dataTag);
+						return true;
+					}else{
+						return false;
+					}
+				}catch (NumberFormatException e) {
 					return false;
-				}
-			}catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}	
+				}	
+			}
+			return false;
 		}
 	}
 

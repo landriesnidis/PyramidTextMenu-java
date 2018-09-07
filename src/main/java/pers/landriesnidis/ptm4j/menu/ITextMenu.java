@@ -102,4 +102,29 @@ public interface ITextMenu {
 	 * @return
 	 */
 	TextMenuReader getTextMenuReader();
+	
+	/**
+	 * 当前菜单是否允许显示行号
+	 * @return
+	 */
+	boolean isAllowShowSerialNumber();
+	
+	/**
+	 * 设置当前菜单是否显示行号
+	 * @param allowShowSerialNumber
+	 */
+	void setAllowShowSerialNumber(boolean allowShowSerialNumber);
+	
+	/**
+	 * 当前菜单是否允许接收文本
+	 * @return
+	 */
+	boolean isAllowReveiceText();
+	
+	/**
+	 * 设置当前菜单是否接收文本
+	 * @param isAllowReveiceText
+	 */
+	void setAllowReveiceText(boolean isAllowReveiceText);
+	
 }
