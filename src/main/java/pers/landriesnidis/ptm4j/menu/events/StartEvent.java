@@ -1,14 +1,20 @@
 package pers.landriesnidis.ptm4j.menu.events;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
+import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
 public class StartEvent extends Event{
+	
 	private ActionType actionType;
 	private String [] args;
 	
-	public StartEvent() {}
-	public StartEvent(ActionType actionType) {
-		this.actionType = actionType;
+//	public StartEvent() {}
+//	public StartEvent(ActionType actionType) {
+//		this.actionType = actionType;
+//	}
+	
+	public StartEvent(ISceneContext context) {
+		super(context);
 	}
 	
 	public ActionType getActionType() {

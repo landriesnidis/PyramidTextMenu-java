@@ -2,7 +2,7 @@ package pers.landriesnidis.ptm4j.option;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.menu.TextMenu;
-import pers.landriesnidis.ptm4j.scene.Scene;
+import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
 public class Option implements IOption {
 	// 触发动作的关键字
@@ -76,11 +76,9 @@ public class Option implements IOption {
 		this.optional = optional;
 	}
 
-	public void execute(String text, Object dataTag) {
+	public void execute(String text, ISceneContext context, Object dataTag) {
 		// 获取所处菜单
 		TextMenu menu = this.getMenuContext();
-		// 获取所处场景
-		Scene scene = menu.getScene();
 		// 检查可用状态
 		if(!this.optional)return;
 		// 执行预处理回调方法
@@ -88,22 +86,22 @@ public class Option implements IOption {
 		// 根据动作类型执行操作
 		switch (getType()) {
 		case TEXT:
-			if(getTextContent()!=null)scene.output(getTextContent(), menu.getTextMenuReader(), dataTag);
+			if(getTextContent()!=null)context.output(getTextContent(), menu.getTextMenuReader(), context, dataTag);
 			break;
 		case MENU:
-			scene.startMenu(createTextMenuObject(getMenuClass()), this);
+			context.startMenu(createTextMenuObject(getMenuClass()), this);
 			break;
 		case MENU_ARGS:
-			scene.startMenu(createTextMenuObject(getMenuClass()), this, text.split(" "));
+			context.startMenu(createTextMenuObject(getMenuClass()), this, text.split(" "));
 			break;
 		case BACK:
-			scene.returnToPreviousMenu(this);
+			context.returnToPreviousMenu(this);
 			break;
 		case BACK_ROOT:
-			scene.returnToRootMenu(this);
+			context.returnToRootMenu(this);
 			break;
 		case RELOAD:
-			scene.reloadMenu(text.split(" "));
+			context.reloadMenu(text.split(" "));
 			break;
 		default:
 			

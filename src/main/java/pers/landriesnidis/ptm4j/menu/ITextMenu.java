@@ -1,6 +1,7 @@
 package pers.landriesnidis.ptm4j.menu;
 
 import pers.landriesnidis.ptm4j.option.Option;
+import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
 public interface ITextMenu {
 	/**
@@ -73,30 +74,30 @@ public interface ITextMenu {
 	 * @param text
 	 * @return
 	 */
-	boolean selectOption(String text, Object dataTag);
+	boolean selectOption(String text, ISceneContext context, Object dataTag);
 	
 	/**
 	 * 显示菜单信息
 	 */
-	void showMenu(Object dataTag);
+	void showMenu(ISceneContext context, Object dataTag);
 	/**
 	 * 显示格式化信息
 	 * @param title
 	 * @param content
 	 * @param menu
 	 */
-	void showInfo(String title, String content, String menu, Object dataTag);
+	void showInfo(String title, String content, String menu, ISceneContext context, Object dataTag);
 	/**
 	 * 显示
 	 * @param msg
 	 */
-	void showMessage(String msg, Object dataTag);
+	void showMessage(String msg, ISceneContext context, Object dataTag);
 	/**
 	 * 当接收到用户输入的信息（当菜单设置允许接收信息时才会被执行）
 	 * @param text
 	 * @return
 	 */
-	boolean onTextReveived(String text, Object dataTag);
+	boolean onTextReveived(String text, ISceneContext context, Object dataTag);
 	/**
 	 * 获取菜单信息读取器
 	 * @return
