@@ -13,8 +13,10 @@ import pers.landriesnidis.ptm4j.menu.events.StopEvent;
 import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
-public class TextMenu implements ITextMenu, IOptionGroup, IMenuIifeCycle, IMenuContext{
+public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuContext{
 
+	public final static String DEFAULT_TEXT_LINE = "·-·-·-·-·-·-·-·";
+	
 	// 选择项
 	private List<Option> options;
 	// 标题
@@ -139,6 +141,10 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuIifeCycle, IMenuC
 		options.add(option);
 	}
 	
+	public void addTextLine(){
+		addTextLine(DEFAULT_TEXT_LINE);
+	}
+	
 	public void addTextLine(String text){
 		Option option = new Option(this);
 		option.setKeyWord(text);
@@ -221,12 +227,8 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuIifeCycle, IMenuC
 	}
 
 	public void showInfo(String title, String content, String menu, ISceneContext sceneContext, Object dataTag) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("[%s]\n", title));
-		sb.append(String.format("%s\n", content));
-		sb.append("·-·-·-·-·-·-·-·\n");
-		sb.append(menu);
-		showMessage(sb.toString(), sceneContext,dataTag);
+		String info = String.format("[%s]\n%s\n%s", title,content,menu);
+		showMessage(info, sceneContext, dataTag);
 	}
 
 	public void showMessage(String msg, ISceneContext sceneContext, Object dataTag) {
