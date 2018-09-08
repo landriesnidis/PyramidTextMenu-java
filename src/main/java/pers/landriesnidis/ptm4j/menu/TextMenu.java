@@ -168,12 +168,16 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 
 	public Option getOption(int index) {
 		int invalidItemCount = 0;
-		for(int i=0;i<index+invalidItemCount;++i){
+		for(int i=0;i<index+invalidItemCount && i<options.size();++i){
 			if(!options.get(i).getOptional()){
 				++invalidItemCount;
 			}
 		}
-		return options.get(index-1+invalidItemCount);
+		index = index-1+invalidItemCount;
+		if(index<options.size())
+			return options.get(index);
+		
+		return null;
 	}
 
 	public Option getOption(String text) {
