@@ -41,7 +41,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	}
 	
 	public void onStart(StartEvent e) {
-		showMenu(e.getContext(),null);
+		showMenu(e.getSceneContext(),null);
 	}
 
 	public void onStop(StopEvent e) {
