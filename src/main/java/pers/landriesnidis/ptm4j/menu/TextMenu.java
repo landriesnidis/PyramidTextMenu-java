@@ -100,7 +100,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setTextContent(content);
-		option.setType(ActionType.TEXT);
+		option.setActionType(ActionType.TEXT);
 		options.add(option);
 	}
 
@@ -108,7 +108,16 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(classMenu);
-		option.setType(ActionType.MENU);
+		option.setActionType(ActionType.MENU);
+		options.add(option);
+	}
+	
+	public void addMenuOption(String keyword, TextMenu menuObject) {
+		Option option = new Option(this);
+		option.setKeyWord(keyword);
+		option.setMenuClass(menuObject.getClass());
+		option.setMenuObject(menuObject);
+		option.setActionType(ActionType.MENU);
 		options.add(option);
 	}
 
@@ -116,28 +125,37 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(classMenu);
-		option.setType(ActionType.MENU_ARGS);
+		option.setActionType(ActionType.MENU_ARGS);
+		options.add(option);
+	}
+	
+	public void addArgsMenuOption(String keyword, TextMenu menuObject) {
+		Option option = new Option(this);
+		option.setKeyWord(keyword);
+		option.setMenuClass(menuObject.getClass());
+		option.setMenuObject(menuObject);
+		option.setActionType(ActionType.MENU_ARGS);
 		options.add(option);
 	}
 
 	public void addBackOption(String keyword) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
-		option.setType(ActionType.BACK);
+		option.setActionType(ActionType.BACK);
 		options.add(option);
 	}
 	
 	public void addBackRootOption(String keyword) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
-		option.setType(ActionType.BACK_ROOT);
+		option.setActionType(ActionType.BACK_ROOT);
 		options.add(option);
 	}
 
 	public void addReloadOption(String keyword) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
-		option.setType(ActionType.RELOAD);
+		option.setActionType(ActionType.RELOAD);
 		options.add(option);
 	}
 	
@@ -148,7 +166,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	public void addTextLine(String text){
 		Option option = new Option(this);
 		option.setKeyWord(text);
-		option.setType(ActionType.TEXT);
+		option.setActionType(ActionType.TEXT);
 		option.setOptional(false);
 		options.add(option);
 	}

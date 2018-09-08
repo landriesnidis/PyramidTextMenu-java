@@ -17,18 +17,32 @@ public interface IOptionGroup {
 	void addTextOption(String keyword, String content);
 	
 	/**
-	 *  添加子菜单选项
+	 * 添加菜单选项（指定菜单类型）
 	 * @param keyword
 	 * @param classMenu
 	 */
 	void addMenuOption(String keyword, Class<? extends TextMenu> classMenu);
 	
 	/**
-	 * 添加可接受参数的菜单选项
+	 * 添加菜单选项（指定菜单对象）
+	 * @param keyword
+	 * @param menuObject
+	 */
+	void addMenuOption(String keyword, TextMenu menuObject);
+	
+	/**
+	 * 添加可接受参数的子菜单选项（指定菜单类型）
 	 * @param keyword
 	 * @param classMenu
 	 */
 	void addArgsMenuOption(String keyword, Class<? extends TextMenu> classMenu);
+	
+	/**
+	 * 添加可接受参数的子菜单选项（指定菜单对象）
+	 * @param keyword
+	 * @param menuObject
+	 */
+	void addArgsMenuOption(String keyword, TextMenu menuObject);
 	
 	/**
 	 * 添加返回上一层菜单的选项
