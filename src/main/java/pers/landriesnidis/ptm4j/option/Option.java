@@ -95,7 +95,7 @@ public class Option implements IOption {
 			sceneContext.startMenu(createTextMenuObject(getMenuClass()), this, text.split(" "));
 			break;
 		case BACK:
-			sceneContext.returnToPreviousMenu(this);
+			sceneContext.returnToPreviousMenu(this, text.contains(" ")?text.split(" "):null);
 			break;
 		case BACK_ROOT:
 			sceneContext.returnToRootMenu(this);
