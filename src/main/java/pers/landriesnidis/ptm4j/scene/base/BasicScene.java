@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.menu.TextMenu;
-import pers.landriesnidis.ptm4j.menu.TextMenuReader;
+import pers.landriesnidis.ptm4j.menu.context.IMenuContext;
 import pers.landriesnidis.ptm4j.menu.events.BackEvent;
 import pers.landriesnidis.ptm4j.menu.events.LoadEvent;
 import pers.landriesnidis.ptm4j.menu.events.StartEvent;
@@ -31,8 +31,8 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		return getRunningMenu().selectOption(text,this, dataTag);
 	}
 	
-	public void output(String text, TextMenuReader textMenuReader, ISceneContext context, Object dataTag) {
-		this.reader.output(text, textMenuReader, context, dataTag);
+	public void output(String text, IMenuContext menuContext, ISceneContext sceneContext, Object dataTag) {
+		this.reader.output(text, menuContext, sceneContext, dataTag);
 	}
 
 	public void setSceneReader(SceneReader reader) {
@@ -208,9 +208,11 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		// 创建StartEvent对象
 		StartEvent startEvent = new StartEvent(this);
 		startEvent.setActionType(ActionType.RELOAD);
-		startEvent.setArgs(null);
+		startEvent.setArgs(args);
 
 		// 新Menu触发onStart事件
 		newMenu.onStart(startEvent);
 	}
+
+
 }

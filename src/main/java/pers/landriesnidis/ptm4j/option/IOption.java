@@ -7,5 +7,5 @@ public interface IOption {
 	 * 选择项执行内容
 	 * @param text
 	 */
-	void execute(String text, ISceneContext context, Object dataTag);
+	void execute(String text, ISceneContext sceneContext, Object dataTag);
 }

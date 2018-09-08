@@ -8,13 +8,8 @@ public class StartEvent extends Event{
 	private ActionType actionType;
 	private String [] args;
 	
-//	public StartEvent() {}
-//	public StartEvent(ActionType actionType) {
-//		this.actionType = actionType;
-//	}
-	
-	public StartEvent(ISceneContext context) {
-		super(context);
+	public StartEvent(ISceneContext sceneContext) {
+		super(sceneContext);
 	}
 	
 	public ActionType getActionType() {

@@ -9,13 +9,8 @@ public class LoadEvent extends Event{
 	private ActionType actionType;
 	private TextMenu previousMenu;
 	
-//	public LoadEvent() {}
-//	public LoadEvent(ActionType actionType) {
-//		this.actionType = actionType;
-//	}
-	
-	public LoadEvent(ISceneContext context) {
-		super(context);
+	public LoadEvent(ISceneContext sceneContext) {
+		super(sceneContext);
 	}
 	
 	public ActionType getActionType() {

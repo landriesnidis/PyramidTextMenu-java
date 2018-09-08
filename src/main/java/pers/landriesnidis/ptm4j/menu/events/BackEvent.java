@@ -8,13 +8,8 @@ public class BackEvent extends Event{
 	private String[] args;
 	private ActionType actionType = ActionType.BACK;
 	
-//	public BackEvent() {}
-//	public BackEvent(ActionType actionType) {
-//		this.actionType = actionType;
-//	}
-	
-	public BackEvent(ISceneContext context) {
-		super(context);
+	public BackEvent(ISceneContext sceneContext) {
+		super(sceneContext);
 	}
 	
 	public String[] getArgs() {

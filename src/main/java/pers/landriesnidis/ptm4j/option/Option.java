@@ -76,32 +76,32 @@ public class Option implements IOption {
 		this.optional = optional;
 	}
 
-	public void execute(String text, ISceneContext context, Object dataTag) {
+	public void execute(String text, ISceneContext sceneContext, Object dataTag) {
 		// 获取所处菜单
 		TextMenu menu = this.getMenuContext();
 		// 检查可用状态
 		if(!this.optional)return;
 		// 执行预处理回调方法
-		if(this.preparatoryExecuteHandler!=null && !this.preparatoryExecuteHandler.preparatoryExecuteHandle(text,dataTag, this)) return;
+		if(this.preparatoryExecuteHandler!=null && !this.preparatoryExecuteHandler.preparatoryExecuteHandle(text, sceneContext, dataTag, this)) return;
 		// 根据动作类型执行操作
 		switch (getType()) {
 		case TEXT:
-			if(getTextContent()!=null)context.output(getTextContent(), menu.getTextMenuReader(), context, dataTag);
+			if(getTextContent()!=null)sceneContext.output(getTextContent(), menu.getMenuContext(), sceneContext, dataTag);
 			break;
 		case MENU:
-			context.startMenu(createTextMenuObject(getMenuClass()), this);
+			sceneContext.startMenu(createTextMenuObject(getMenuClass()), this);
 			break;
 		case MENU_ARGS:
-			context.startMenu(createTextMenuObject(getMenuClass()), this, text.split(" "));
+			sceneContext.startMenu(createTextMenuObject(getMenuClass()), this, text.split(" "));
 			break;
 		case BACK:
-			context.returnToPreviousMenu(this);
+			sceneContext.returnToPreviousMenu(this);
 			break;
 		case BACK_ROOT:
-			context.returnToRootMenu(this);
+			sceneContext.returnToRootMenu(this);
 			break;
 		case RELOAD:
-			context.reloadMenu(text.split(" "));
+			sceneContext.reloadMenu(text.split(" "));
 			break;
 		default:
 			

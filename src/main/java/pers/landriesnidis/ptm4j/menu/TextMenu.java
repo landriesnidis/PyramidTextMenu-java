@@ -2,8 +2,10 @@ package pers.landriesnidis.ptm4j.menu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
+import pers.landriesnidis.ptm4j.menu.context.IMenuContext;
 import pers.landriesnidis.ptm4j.menu.events.BackEvent;
 import pers.landriesnidis.ptm4j.menu.events.LoadEvent;
 import pers.landriesnidis.ptm4j.menu.events.StartEvent;
@@ -11,18 +13,14 @@ import pers.landriesnidis.ptm4j.menu.events.StopEvent;
 import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
-public class TextMenu implements IMenuIifeCycle, ITextMenu{
+public class TextMenu implements ITextMenu, IOptionGroup, IMenuIifeCycle, IMenuContext{
 
-	// 所处的场景
-//	private Scene scene;
 	// 选择项
 	private List<Option> options;
 	// 标题
-	private String title = "Menu";
+	private String title;
 	// 文本内容
 	private String textContent;
-	// 菜单信息读取器
-	private TextMenuReader reader = null;
 	// 是否允许接收文本（接收非选择项的文本内容）
 	private boolean allowReveiceText;
 	private boolean allowShowSerialNumber;
@@ -56,14 +54,6 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		
 	}
 
-//	public Scene getScene() {
-//		return scene;
-//	}
-//
-//	public void setScene(Scene scene) {
-//		this.scene = scene;
-//	}
-
 	public void addOption(Option option) {
 		options.add(option);
 	}
@@ -96,6 +86,14 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		this.allowReveiceText = isAllowReveiceText;
 	}
 	
+	public List<Option> getMenuOptions() {
+		return options;
+	}
+
+	public IMenuContext getMenuContext() {
+		return this;
+	}
+	
 	public void addTextOption(String keyword, String content) {
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
@@ -124,6 +122,13 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setType(ActionType.BACK);
+		options.add(option);
+	}
+	
+	public void addBackRootOption(String keyword) {
+		Option option = new Option(this);
+		option.setKeyWord(keyword);
+		option.setType(ActionType.BACK_ROOT);
 		options.add(option);
 	}
 
@@ -165,21 +170,27 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		return options.get(index-1+invalidItemCount);
 	}
 
-	public Option getOption(String optionKeyword) {
+	public Option getOption(String text) {
 		int size = options.size()-1;
 		String kw = null;
 		Option o = null;
+		String[] args = text.split(" ");
+		// 遍历选项组
 		for(int i=0;i<=size;++i){
+			// 倒序遍历
 			o = options.get(size-i);
+			// 如果可选性为否则略过
+			if(!o.getOptional())continue;
+			// 获取关键字
 			kw = o.getKeyWord();
-			if(o.getType()==ActionType.MENU_ARGS){
-				if(kw.contentEquals(optionKeyword.split(" ")[0])){
-					return o;
-				}
-			}else{
-				if(kw.contentEquals(optionKeyword)){
-					return o;
-				}
+			// 判断是否为携带参数类型
+			if(kw.contentEquals(args[0])){
+				return o;
+			}
+		}
+		if(isAllowShowSerialNumber()){
+			if(Pattern.compile("^[-\\+]?[\\d]*$").matcher(args[0]).matches()){
+				return getOption(Integer.parseInt(args[0]));
 			}
 		}
 		return null;
@@ -189,7 +200,7 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 		return options.get(options.size()-1);
 	}
 
-	public void showMenu(ISceneContext context, Object dataTag) {
+	public void showMenu(ISceneContext sceneContext, Object dataTag) {
 		StringBuilder menuText = new StringBuilder();
 		int i=1;
 		// 遍历选项
@@ -206,77 +217,41 @@ public class TextMenu implements IMenuIifeCycle, ITextMenu{
 				menuText.append(String.format(" · %s\n", o.getKeyWord()));
 			}
 		}
-		showInfo(getTitle(),getTextContent(),menuText.toString(),context,dataTag);
+		showInfo(getTitle(),getTextContent(),menuText.toString(),sceneContext,dataTag);
 	}
 
-	public void showInfo(String title, String content, String menu, ISceneContext context, Object dataTag) {
+	public void showInfo(String title, String content, String menu, ISceneContext sceneContext, Object dataTag) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("[%s]\n", title));
 		sb.append(String.format("%s\n", content));
 		sb.append("·-·-·-·-·-·-·-·\n");
 		sb.append(menu);
-		showMessage(sb.toString(), context,dataTag);
+		showMessage(sb.toString(), sceneContext,dataTag);
 	}
 
-	public void showMessage(String msg, ISceneContext context, Object dataTag) {
-		context.output(msg, getTextMenuReader(), context, dataTag);
+	public void showMessage(String msg, ISceneContext sceneContext, Object dataTag) {
+		sceneContext.output(msg, this, sceneContext, dataTag);
 	}
 
-	public boolean selectOption(String text, ISceneContext context, Object dataTag) {
+	public boolean selectOption(String text, ISceneContext sceneContext, Object dataTag) {
 		// 获取关键字与输入内容相符的选项对象
 		Option option = this.getOption(text);
-		// 判断选项是否存在
+		
 		if(option!=null){
 			// 若存在则执行相应操作
-			option.execute(text, context, dataTag);
+			option.execute(text, sceneContext, dataTag);
 			return true;
 		}else{
-			// 若不存在
 			// 判断菜单是否允许接收任意输入文本 且文本信息是否有效
-			if(isAllowReveiceText() && onTextReveived(text, context, dataTag)){
+			if(isAllowReveiceText() && onTextReveived(text, sceneContext, dataTag)){
 				return true;
 			}
-			if(isAllowShowSerialNumber()){
-				//执行序号
-				int index = 0;
-				try{
-					index = Integer.parseInt(text.trim());
-					option = this.getOption(index);
-					if(option!=null){
-						option.execute(text, context, dataTag);
-						return true;
-					}else{
-						return false;
-					}
-				}catch (NumberFormatException e) {
-					return false;
-				}	
-			}
-			return false;
 		}
-	}
-
-	public boolean onTextReveived(String text, ISceneContext context, Object dataTag) {
+		
 		return false;
 	}
 
-	public TextMenuReader getTextMenuReader() {
-		if(reader==null){
-			reader = new TextMenuReader() {
-				
-				public String getMenuTitle() {
-					return title;
-				}
-				
-				public String getMenuTextContent() {
-					return textContent;
-				}
-				
-				public List<Option> getMenuOptions() {
-					return options;
-				}
-			};
-		}
-		return reader;
+	public boolean onTextReveived(String text, ISceneContext sceneContext, Object dataTag) {
+		return false;
 	}
 }
