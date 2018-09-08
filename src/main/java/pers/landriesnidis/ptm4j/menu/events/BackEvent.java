@@ -3,7 +3,7 @@ package pers.landriesnidis.ptm4j.menu.events;
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
-public class BackEvent extends Event{
+public class BackEvent extends BaseEvent{
 
 	private String[] args;
 	private ActionType actionType = ActionType.BACK;

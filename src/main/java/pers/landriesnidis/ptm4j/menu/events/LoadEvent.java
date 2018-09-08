@@ -4,7 +4,7 @@ import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.menu.TextMenu;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
-public class LoadEvent extends Event{
+public class LoadEvent extends BaseEvent{
 
 	private ActionType actionType;
 	private TextMenu previousMenu;

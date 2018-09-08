@@ -2,15 +2,15 @@ package pers.landriesnidis.ptm4j.menu.events;
 
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
-public class Event {
+public class BaseEvent {
 	private ISceneContext sceneContext;
 	private String keyword;
 	
-	public Event(ISceneContext sceneContext) {
+	public BaseEvent(ISceneContext sceneContext) {
 		this.sceneContext = sceneContext;
 	}
 	
-	public ISceneContext getContext() {
+	public ISceneContext getSceneContext() {
 		return sceneContext;
 	}
 	
