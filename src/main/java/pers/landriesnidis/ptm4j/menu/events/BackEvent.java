@@ -18,10 +18,10 @@ public class BackEvent extends BaseEvent{
 	public void setArgs(String[] args) {
 		this.args = args;
 	}
-	public ActionType getType() {
+	public ActionType getActionType() {
 		return actionType;
 	}
-	public void setType(ActionType type) {
+	public void setActionType(ActionType type) {
 		this.actionType = type;
 	}
 }
