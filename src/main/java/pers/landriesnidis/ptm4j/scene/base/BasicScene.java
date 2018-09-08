@@ -94,7 +94,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 
 		// 创建LoadEvent对象
 		LoadEvent loadEvent = new LoadEvent(this);
-		loadEvent.setActionType(option.getType());
+		loadEvent.setActionType(option.getActionType());
 		loadEvent.setKeyword(option.getKeyWord());
 
 		// 新Menu触发onLoad事件
@@ -102,7 +102,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 
 		// 创建StartEvent对象
 		StartEvent startEvent = new StartEvent(this);
-		startEvent.setActionType(option.getType());
+		startEvent.setActionType(option.getActionType());
 		startEvent.setArgs(args);
 
 		// 新Menu触发onStart事件
@@ -144,7 +144,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		// 创建StartEvent对象
 		StartEvent startEvent = new StartEvent(this);
 		if (option != null) {
-			startEvent.setActionType(option.getType());
+			startEvent.setActionType(option.getActionType());
 			if (args != null) {
 				startEvent.setArgs(args);
 			}
@@ -181,7 +181,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 
 		// 创建StartEvent对象
 		StartEvent startEvent = new StartEvent(this);
-		startEvent.setActionType(option.getType());
+		startEvent.setActionType(option.getActionType());
 		startEvent.setArgs(null);
 
 		// 新Menu触发onStart事件
@@ -191,7 +191,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 	public void reloadMenu(String[] args) {
 		// 保存原Menu和上一层Menu，根据原Menu创建新的同类型Menu并替换
 		TextMenu oldMenu = textMenuLinkedList.removeLast();
-		TextMenu newMenu = Option.createTextMenuObject(oldMenu.getClass());
+		TextMenu newMenu = TextMenu.createTextMenuObject(oldMenu.getClass());
 		setRunningMenu(newMenu);
 
 		// 创建LoadEvent事件对象

@@ -102,14 +102,14 @@ public class Option implements IOption {
 			if(menuObject!=null){
 				sceneContext.startMenu(menuObject, this);
 			}else{
-				sceneContext.startMenu(createTextMenuObject(getMenuClass()), this);
+				sceneContext.startMenu(TextMenu.createTextMenuObject(getMenuClass()), this);
 			}
 			break;
 		case MENU_ARGS:
 			if(menuObject!=null){
-				
-			}else{
 				sceneContext.startMenu(menuObject, this, text.split(" "));
+			}else{
+				sceneContext.startMenu(TextMenu.createTextMenuObject(getMenuClass()), this, text.split(" "));
 			}
 			break;
 		case BACK:
@@ -124,20 +124,5 @@ public class Option implements IOption {
 		default:
 			
 		}
-	}
-	
-	public final static TextMenu createTextMenuObject(Class<? extends TextMenu> menuClass){
-		try {
-			try {
-				return (TextMenu) Class.forName(menuClass.getName()).newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

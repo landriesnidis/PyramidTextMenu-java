@@ -278,4 +278,19 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	public boolean onTextReveived(String text, ISceneContext sceneContext, Object dataTag) {
 		return false;
 	}
+	
+	public final static TextMenu createTextMenuObject(Class<? extends TextMenu> menuClass){
+		try {
+			try {
+				return (TextMenu) Class.forName(menuClass.getName()).newInstance();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
