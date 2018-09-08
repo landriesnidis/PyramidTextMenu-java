@@ -96,7 +96,6 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		LoadEvent loadEvent = new LoadEvent(this);
 		loadEvent.setActionType(option.getType());
 		loadEvent.setKeyword(option.getKeyWord());
-		loadEvent.setPreviousMenu(previousMenu);
 
 		// 新Menu触发onLoad事件
 		menu.onLoad(loadEvent);
@@ -175,7 +174,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		// 创建BackEvent事件对象
 		BackEvent e = new BackEvent(this);
 		e.setKeyword(option.getKeyWord());
-		e.setType(ActionType.BACK_ROOT);
+		e.setActionType(ActionType.BACK_ROOT);
 
 		// 根Menu触发onLoad事件
 		getRunningMenu().onBack(e);
@@ -192,7 +191,6 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 	public void reloadMenu(String[] args) {
 		// 保存原Menu和上一层Menu，根据原Menu创建新的同类型Menu并替换
 		TextMenu oldMenu = textMenuLinkedList.removeLast();
-		TextMenu previousMenu = textMenuLinkedList.getLast();
 		TextMenu newMenu = Option.createTextMenuObject(oldMenu.getClass());
 		setRunningMenu(newMenu);
 
@@ -200,7 +198,6 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		LoadEvent le = new LoadEvent(this);
 		le.setActionType(ActionType.RELOAD);
 		le.setKeyword(null);
-		le.setPreviousMenu(previousMenu);
 
 		// 新Menu触发onLoad事件
 		newMenu.onLoad(le);
