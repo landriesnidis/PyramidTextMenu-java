@@ -42,4 +42,10 @@ public interface ITextMenu {
 	 */
 	void setAllowReveiceText(boolean isAllowReveiceText);
 	
+	/**
+	 * 获取格式化的菜单信息
+	 * @return
+	 */
+	String getMenuFormatString();
+	
 }

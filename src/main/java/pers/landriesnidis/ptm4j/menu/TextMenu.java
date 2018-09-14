@@ -227,8 +227,8 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	public Option getLastOption() {
 		return options.get(options.size()-1);
 	}
-
-	public void showMenu(ISceneContext sceneContext, Object dataTag) {
+	
+	public String getMenuFormatString() {
 		StringBuilder menuText = new StringBuilder();
 		int i=1;
 		// 遍历选项
@@ -245,7 +245,11 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 				menuText.append(String.format(" · %s\n", o.getKeyWord()));
 			}
 		}
-		showInfo(getTitle(),getTextContent(),menuText.toString(),sceneContext,dataTag);
+		return menuText.toString();
+	}
+
+	public void showMenu(ISceneContext sceneContext, Object dataTag) {
+		showInfo(getTitle(),getTextContent(),getMenuFormatString(),sceneContext,dataTag);
 	}
 
 	public void showInfo(String title, String content, String menu, ISceneContext sceneContext, Object dataTag) {
