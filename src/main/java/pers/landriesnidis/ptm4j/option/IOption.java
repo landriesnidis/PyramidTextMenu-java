@@ -11,35 +11,38 @@ public interface IOption {
 	 */
 	void execute(String text, ISceneContext sceneContext, Object dataTag);
 	
-	public String getKeyWord();
+	String getKeyWord();
 
-	public void setKeyWord(String keyWord);
+	void setKeyWord(String keyWord);
 	
-	public ActionType getActionType();
+	ActionType getActionType();
 
-	public void setActionType(ActionType type);
+	void setActionType(ActionType type);
 	
-	public Boolean getOptional();
+	boolean isOptional();
 	
-	public void setOptional(Boolean optional);
+	void setOptional(Boolean optional);
+	
+	boolean isVisibility();
+	
+	void setVisibility(boolean visibility);
 
-	public String getTextContent();
+	String getTextContent();
 
-	public void setTextContent(String textContent);
+	void setTextContent(String textContent);
 
-	public Class<? extends TextMenu> getMenuClass();
+	Class<? extends TextMenu> getMenuClass();
 
-	public void setMenuClass(Class<? extends TextMenu> menuClass);
+	void setMenuClass(Class<? extends TextMenu> menuClass);
 	
-	public TextMenu getMenuObject();
+	TextMenu getMenuObject();
 	
-	public void setMenuObject(TextMenu menuObject);
+	void setMenuObject(TextMenu menuObject);
 	
-	public TextMenu getMenuContext();
+	TextMenu getMenuContext();
 	
-	public void setPreparatoryExecuteHandler(OptionHandler preparatoryExecuteHandler);
+	void setPreparatoryExecuteHandler(OptionHandler preparatoryExecuteHandler);
 	
-	public OptionHandler getPreparatoryExecuteHandler();
+	OptionHandler getPreparatoryExecuteHandler();
 	
-
 }

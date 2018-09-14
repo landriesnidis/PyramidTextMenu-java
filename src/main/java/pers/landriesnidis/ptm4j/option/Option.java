@@ -20,7 +20,9 @@ public class Option implements IOption {
 	// 准备执行的处理程序
 	private OptionHandler preparatoryExecuteHandler;
 	// 是否可选
-	private Boolean optional = true;
+	private boolean optional = true;
+	// 是否可见
+	private boolean visibility = true;
 
 	public Option(TextMenu menuContext) {
 		this.menuContext = menuContext;
@@ -33,7 +35,7 @@ public class Option implements IOption {
 	public void setKeyWord(String keyWord) {
 		this.keyWord = keyWord;
 	}
-
+	
 	public ActionType getActionType() {
 		return type;
 	}
@@ -78,12 +80,20 @@ public class Option implements IOption {
 		return preparatoryExecuteHandler;
 	}
 	
-	public Boolean getOptional() {
+	public boolean isOptional() {
 		return optional;
 	}
 	
 	public void setOptional(Boolean optional) {
 		this.optional = optional;
+	}
+	
+	public boolean isVisibility() {
+		return visibility;
+	}
+	
+	public void setVisibility(boolean visibility) {
+		this.visibility = visibility;
 	}
 
 	public void execute(String text, ISceneContext sceneContext, Object dataTag) {

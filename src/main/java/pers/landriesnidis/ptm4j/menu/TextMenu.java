@@ -187,7 +187,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	public Option getOption(int index) {
 		int invalidItemCount = 0;
 		for(int i=0;i<index+invalidItemCount && i<options.size();++i){
-			if(!options.get(i).getOptional()){
+			if(!options.get(i).isOptional() || !options.get(i).isVisibility()){
 				++invalidItemCount;
 			}
 		}
@@ -208,7 +208,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 			// 倒序遍历
 			o = options.get(size-i);
 			// 如果可选性为否则略过
-			if(!o.getOptional())continue;
+			if(!o.isOptional())continue;
 			// 获取关键字
 			kw = o.getKeyWord();
 			// 判断是否为携带参数类型
@@ -234,8 +234,12 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 		// 遍历选项
 		for(Option o:options){
 			// 判断选项的可用性
-			if(!o.getOptional()){
+			if(!o.isOptional()){
 				menuText.append(String.format("%s\n", o.getKeyWord()));
+				continue;
+			}
+			// 判断选项可见性
+			if(!o.isVisibility()){
 				continue;
 			}
 			// 判断是否启用序号
@@ -275,7 +279,6 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 				return true;
 			}
 		}
-		
 		return false;
 	}
 
