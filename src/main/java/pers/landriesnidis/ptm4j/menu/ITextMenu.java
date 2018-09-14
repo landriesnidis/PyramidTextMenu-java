@@ -43,6 +43,18 @@ public interface ITextMenu {
 	void setAllowReveiceText(boolean isAllowReveiceText);
 	
 	/**
+	 * 当从下一级菜单返回时跳过当前菜单直接返回至上一级
+	 * @return
+	 */
+	boolean isSkipMenuOnBack();
+	
+	/**
+	 * 设置当从下一级菜单返回时跳过当前菜单直接返回至上一级
+	 * @param skipMenuOnBack
+	 */
+	void setSkipMenuOnBack(boolean skipMenuOnBack);
+	
+	/**
 	 * 获取格式化的菜单信息
 	 * @return
 	 */

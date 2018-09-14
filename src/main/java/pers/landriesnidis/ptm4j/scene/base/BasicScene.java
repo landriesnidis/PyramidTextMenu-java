@@ -128,6 +128,12 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		// 原Menu触发onDestroy事件
 		menu.onDestroy();
 		menu = null;
+		
+		// 如果返回的菜单设置了“返回时跳过”的属性，则继续向上一级菜单返回
+		if(textMenuLinkedList.getLast().isSkipMenuOnBack()){
+			returnToPreviousMenu(option, args);
+			return;
+		}
 
 		// 创建BackEvent事件对象
 		BackEvent backEvent = new BackEvent(this);

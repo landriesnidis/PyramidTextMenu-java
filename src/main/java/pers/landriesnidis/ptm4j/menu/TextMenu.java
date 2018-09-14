@@ -25,7 +25,10 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	private String textContent;
 	// 是否允许接收文本（接收非选择项的文本内容）
 	private boolean allowReveiceText;
+	// 是否显示序号
 	private boolean allowShowSerialNumber;
+	// 当从下一级菜单返回时跳过当前菜单直接返回至上一级
+	private boolean skipMenuOnBack;
 	
 	public TextMenu() {
 		options = new ArrayList<Option>();
@@ -86,6 +89,14 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 
 	public void setAllowReveiceText(boolean isAllowReveiceText) {
 		this.allowReveiceText = isAllowReveiceText;
+	}
+	
+	public boolean isSkipMenuOnBack() {
+		return skipMenuOnBack;
+	}
+	
+	public void setSkipMenuOnBack(boolean skipMenuOnBack) {
+		this.skipMenuOnBack = skipMenuOnBack;
 	}
 	
 	public List<Option> getMenuOptions() {
