@@ -6,14 +6,41 @@ import pers.landriesnidis.ptm4j.menu.events.StartEvent;
 import pers.landriesnidis.ptm4j.menu.events.StopEvent;
 
 /**
- * 应用生命周期
+ * TextMenu生命周期
  * @author Landriesnidis
  */
 public interface IMenuLifeCycle {
-	void onCreate();				//当菜单被创建
-	void onLoad(LoadEvent e);		//当菜单被加载
+	/**
+	 * 当TextMenu对象创建时被触发
+	 */
+	void onCreate();
+	
+	/**
+	 * 当TextMenu在Scene中加载时触发
+	 * @param e 事件参数
+	 */
+	void onLoad(LoadEvent e);
+
+	/**
+	 * 当TextMenu开始执行时被触发
+	 * @param e 事件参数
+	 */
 	void onStart(StartEvent e);
-	void onStop(StopEvent e);		//当菜单被新应用暂时覆盖
-	void onBack(BackEvent e);		//当菜单因为退回重新加载时
-	void onDestroy();				//当菜单被销毁
+	
+	/**
+	 * 当TextMenu被新TextMenu暂时覆盖时被触发
+	 * @param e 事件参数
+	 */
+	void onStop(StopEvent e);
+	
+	/**
+	 * 当TextMenu因为退回重新加载时被触发
+	 * @param e 事件参数
+	 */
+	void onBack(BackEvent e);	
+	
+	/**
+	 * 当TextMenu从Scene中卸载时被触发
+	 */
+	void onUnload();				
 }
