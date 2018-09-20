@@ -14,10 +14,10 @@ import pers.landriesnidis.ptm4j.scene.io.SceneReader;
 import pers.landriesnidis.ptm4j.scene.io.SceneWirter;
 
 public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
-	// 菜单组
+	// TextMenu组
 	private LinkedList<TextMenu> textMenuLinkedList = new LinkedList<TextMenu>();
 	
-	// 场景信息读取器
+	// Scene信息读取器
 	private SceneReader reader;
 
 	public BasicScene() {
@@ -76,8 +76,8 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		// 保存原运行中的Menu
 		TextMenu previousMenu = getRunningMenu();
 				
-		// 避免在菜单组中出现环
-		// 如果新跳转的菜单对象存在于菜单组中，则从菜单组中删除后续(包含新菜单对象)
+		// 避免在TextMenu组中出现环
+		// 如果新跳转的TextMenu对象存在于TextMenu组中，则从TextMenu组中删除后续(包含新TextMenu对象)
 		if(textMenuLinkedList.contains(menu)){
 			while(menu != textMenuLinkedList.removeLast());
 		}
@@ -103,6 +103,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		// 创建StartEvent对象
 		StartEvent startEvent = new StartEvent(this);
 		startEvent.setActionType(option.getActionType());
+		startEvent.setKeyword(option.getKeyWord());
 		startEvent.setArgs(args);
 
 		// 新Menu触发onStart事件
@@ -122,14 +123,14 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		if (getRunningMenu() == getRootMenu())
 			return;
 		
-		// 切换至上一级菜单并保存原运行中的Menu
+		// 切换至上一级TextMenu并保存原运行中的Menu
 		TextMenu menu = textMenuLinkedList.removeLast();
 
 		// 原Menu触发onDestroy事件
-		menu.onDestroy();
+		menu.onUnload();
 		menu = null;
 		
-		// 如果返回的菜单设置了“返回时跳过”的属性，则继续向上一级菜单返回
+		// 如果返回的TextMenu设置了“返回时跳过”的属性，则继续向上一级TextMenu返回
 		if(textMenuLinkedList.getLast().isSkipMenuOnBack()){
 			returnToPreviousMenu(option, args);
 			return;
@@ -162,17 +163,17 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 
 	public void returnToRootMenu(Option option) {
 		
-		// 如果当前已处于根菜单则什么也不做
+		// 如果当前已处于根TextMenu则什么也不做
 		if(textMenuLinkedList.size()<=1)return;
 		
-		// 切换菜单
+		// 切换TextMenu
 		TextMenu menu = getRunningMenu();
 
 		// 原Menu触发onDestroy事件
-		menu.onDestroy();
+		menu.onUnload();
 		menu = null;
 		
-		// 返回至根菜单
+		// 返回至根TextMenu
 		TextMenu rootMenu = getRootMenu();
 		textMenuLinkedList.clear();
 		textMenuLinkedList.add(rootMenu);

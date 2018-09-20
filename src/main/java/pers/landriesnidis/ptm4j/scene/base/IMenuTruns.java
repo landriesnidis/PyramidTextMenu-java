@@ -5,27 +5,27 @@ import pers.landriesnidis.ptm4j.option.Option;
 
 public interface IMenuTruns {
 	/** 
-	 * 启动一个新菜单
+	 * 启动一个新TextMenu
 	 * @param menu
 	 */
 	void startMenu(TextMenu menu, Option option);
 	/**
-	 * 启动一个带参数的新菜单
+	 * 启动一个带参数的新TextMenu
 	 * @param option
 	 * @param args
 	 */
 	void startMenu(TextMenu menu, Option option, String[] args);
 	
 	/**
-	 * 未经选项触发强制退回
+	 * 未经Option触发强制退回
 	 */
 	void returnToPreviousMenu();
 	/**
-	 * 返回到上一层菜单
+	 * 返回到上一层TextMenu
 	 */
 	void returnToPreviousMenu(Option option);
 	/**
-	 * 返回上一层菜单（携带参数）
+	 * 返回上一层TextMenu（携带参数）
 	 * @param args
 	 */
 	void returnToPreviousMenu(Option option, String[] args);
@@ -34,7 +34,7 @@ public interface IMenuTruns {
 	 */
 	void returnToRootMenu(Option option);
 	/**
-	 * 重新加载当前菜单
+	 * 重新加载当前TextMenu
 	 * @param option
 	 */
 	void reloadMenu(String[] args);

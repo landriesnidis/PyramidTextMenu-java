@@ -12,15 +12,34 @@ public class BackEvent extends BaseEvent{
 		super(sceneContext);
 	}
 	
+	/**
+	 * 获取参数数组
+	 * @return 参数数组
+	 */
 	public String[] getArgs() {
 		return args;
 	}
+	
+	/**
+	 * 设置参数数组
+	 * @param args 参数数组
+	 */
 	public void setArgs(String[] args) {
 		this.args = args;
 	}
+	
+	/**
+	 * 获取动作类型
+	 * @return 动作类型
+	 */
 	public ActionType getActionType() {
 		return actionType;
 	}
+	
+	/**
+	 * 设置动作类型
+	 * @param type 动作类型
+	 */
 	public void setActionType(ActionType type) {
 		this.actionType = type;
 	}

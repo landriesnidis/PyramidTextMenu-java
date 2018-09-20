@@ -27,7 +27,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	private boolean allowReveiceText;
 	// 是否显示序号
 	private boolean allowShowSerialNumber;
-	// 当从下一级菜单返回时跳过当前菜单直接返回至上一级
+	// 当从下一级TextMenu返回时跳过当前TextMenu直接返回至上一级
 	private boolean skipMenuOnBack;
 	
 	public TextMenu() {
@@ -55,22 +55,26 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 
 	}
 
-	public void onDestroy() {
+	public void onUnload() {
 		
 	}
 
 	public void addOption(Option option) {
 		options.add(option);
 	}
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 	public String getTitle() {
 		return title;
 	}
+	
 	public void setTextContent(String textContent) {
 		this.textContent = textContent;
 	}
+	
 	public String getTextContent() {
 		return textContent;
 	}
@@ -214,7 +218,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 		String kw = null;
 		Option o = null;
 		String[] args = text.split(" ");
-		// 遍历选项组
+		// 遍历Option组
 		for(int i=0;i<=size;++i){
 			// 倒序遍历
 			o = options.get(size-i);
@@ -229,7 +233,11 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 		}
 		if(isAllowShowSerialNumber()){
 			if(Pattern.compile("^[-\\+]?[\\d]*$").matcher(args[0]).matches()){
-				return getOption(Integer.parseInt(args[0]));
+				try{
+					return getOption(Integer.parseInt(args[0]));
+				}catch (NumberFormatException e) {
+					return null;
+				}
 			}
 		}
 		return null;
@@ -242,14 +250,14 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	public String getMenuFormatString() {
 		StringBuilder menuText = new StringBuilder();
 		int i=1;
-		// 遍历选项
+		// 遍历Option
 		for(Option o:options){
-			// 判断选项的可用性
+			// 判断Option的可用性
 			if(!o.isOptional()){
 				menuText.append(String.format("%s\n", o.getKeyWord()));
 				continue;
 			}
-			// 判断选项可见性
+			// 判断Option可见性
 			if(!o.isVisibility()){
 				continue;
 			}
@@ -277,7 +285,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 	}
 
 	public boolean selectOption(String text, ISceneContext sceneContext, Object dataTag) {
-		// 获取关键字与输入内容相符的选项对象
+		// 获取关键字与输入内容相符的Option对象
 		Option option = this.getOption(text);
 		
 		if(option!=null){
@@ -285,7 +293,7 @@ public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuC
 			option.execute(text, sceneContext, dataTag);
 			return true;
 		}else{
-			// 判断菜单是否允许接收任意输入文本 且文本信息是否有效
+			// 判断TextMenu是否允许接收任意输入文本 且文本信息是否有效
 			if(isAllowReveiceText() && onTextReveived(text, sceneContext, dataTag)){
 				return true;
 			}

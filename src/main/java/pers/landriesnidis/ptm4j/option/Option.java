@@ -9,13 +9,13 @@ public class Option implements IOption {
 	private String keyWord;
 	// 动作类型
 	private ActionType type;
-	// 所属的菜单对象
+	// 所属的TextMenu对象
 	private TextMenu menuContext;
 	// 文本类信息（对应ActionType:TEXT）
 	private String textContent;
-	// 触发的下级菜单类型（仅对应ActionType:MENU,MENU_ARGS）
+	// 触发的下级TextMenu类型（仅对应ActionType:MENU,MENU_ARGS）
 	private Class<? extends TextMenu> menuClass;
-	// 触发的下级菜单对象
+	// 触发的下级TextMenu对象
 	private TextMenu menuObject;
 	// 准备执行的处理程序
 	private OptionHandler preparatoryExecuteHandler;
@@ -97,7 +97,7 @@ public class Option implements IOption {
 	}
 
 	public void execute(String text, ISceneContext sceneContext, Object dataTag) {
-		// 获取所处菜单
+		// 获取所处TextMenu
 		TextMenu menu = this.getMenuContext();
 		// 检查可用状态
 		if(!this.optional)return;

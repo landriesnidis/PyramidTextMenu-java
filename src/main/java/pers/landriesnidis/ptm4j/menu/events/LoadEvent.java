@@ -11,10 +11,19 @@ public class LoadEvent extends BaseEvent{
 		super(sceneContext);
 	}
 	
+	/**
+	 * 获取动作类型
+	 * @return 动作类型
+	 */
 	public ActionType getActionType() {
 		return actionType;
 	}
-	public void setActionType(ActionType actionType) {
-		this.actionType = actionType;
+	
+	/**
+	 * 设置动作类型
+	 * @param type 动作类型
+	 */
+	public void setActionType(ActionType type) {
+		this.actionType = type;
 	}
 }
