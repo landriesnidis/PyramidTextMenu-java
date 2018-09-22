@@ -2,6 +2,10 @@ package pers.landriesnidis.ptm4j.option;
 
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
+/**
+ * Option处理程序接口
+ * @author Landriesnidis
+ */
 public interface OptionHandler {
 	/**
 	 * 执行前的预处理程序

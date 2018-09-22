@@ -11,8 +11,14 @@ import pers.landriesnidis.ptm4j.menu.events.StartEvent;
 import pers.landriesnidis.ptm4j.menu.events.StopEvent;
 import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.io.SceneReader;
-import pers.landriesnidis.ptm4j.scene.io.SceneWirter;
+import pers.landriesnidis.ptm4j.scene.io.SceneWriter;
 
+/**
+ * BasicScene
+ * 基本会话场景
+ * @author Landriesnidis
+ *
+ */
 public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 	// TextMenu组
 	private LinkedList<TextMenu> textMenuLinkedList = new LinkedList<TextMenu>();
@@ -39,7 +45,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		this.reader = reader;
 	}
 
-	public SceneWirter getSceneWirter() {
+	public SceneWriter getSceneWriter() {
 		return this;
 	}
 	

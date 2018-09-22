@@ -4,6 +4,10 @@ import java.util.List;
 
 import pers.landriesnidis.ptm4j.option.Option;
 
+/**
+ * TextMenu的Option组控制接口
+ * @author Landriesnidis
+ */
 public interface IMenuOptionsControl {
 	/**
 	 * 根据序号获取Option对象
@@ -13,7 +17,7 @@ public interface IMenuOptionsControl {
 	
 	/**
 	 * 根据关键字获取Option对象
-	 * @param keyword Option的关键字
+	 * @param keyword Option对象的关键字
 	 */
 	Option getOption(String keyword);
 	

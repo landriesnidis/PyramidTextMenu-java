@@ -1,5 +1,9 @@
 package pers.landriesnidis.ptm4j.enums;
 
+/**
+ * 动作类型
+ * @author Landriesnidis
+ */
 public enum ActionType {
 	//返回固定的文本信息
 	TEXT,		

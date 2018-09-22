@@ -3,6 +3,11 @@ package pers.landriesnidis.ptm4j.menu.events;
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
+/**
+ * 启动事件类型
+ * @author Landriesnidis
+ *
+ */
 public class StartEvent extends BaseEvent{
 	
 	private ActionType actionType;

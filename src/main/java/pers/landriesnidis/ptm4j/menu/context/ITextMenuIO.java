@@ -2,6 +2,10 @@ package pers.landriesnidis.ptm4j.menu.context;
 
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
+/**
+ * TextMenu IO接口
+ * @author Landriesnidis
+ */
 public interface ITextMenuIO {
 	
 	/**

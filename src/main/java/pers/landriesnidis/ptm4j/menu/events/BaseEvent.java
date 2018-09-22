@@ -2,6 +2,10 @@ package pers.landriesnidis.ptm4j.menu.events;
 
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
+/**
+ * 基本事件类型
+ * @author Landriesnidis
+ */
 public class BaseEvent {
 	private ISceneContext sceneContext;
 	private String keyword;
@@ -19,17 +23,17 @@ public class BaseEvent {
 	}
 	
 	/**
-	 * 获取上一次跳转时选择的Option的关键字
+	 * 获取上一次跳转时选择的Option对象的关键字
 	 * 若上一次的跳转为强制跳转或TextMenu为RootMenu，返回的关键字为null
-	 * @return 跳转时选择的Option的关键字
+	 * @return 跳转时选择的Option对象的关键字
 	 */
 	public String getKeyword() {
 		return keyword;
 	}
 	
 	/**
-	 * 设置跳转时选择的Option的关键字
-	 * @param keyword 跳转时选择的Option的关键字
+	 * 设置跳转时选择的Option对象的关键字
+	 * @param keyword 跳转时选择的Option对象的关键字
 	 */
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;

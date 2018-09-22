@@ -13,6 +13,11 @@ import pers.landriesnidis.ptm4j.menu.events.StopEvent;
 import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
+/**
+ * TextMenu
+ * 文本菜单/目录类型
+ * @author Landriesnidis
+ */
 public class TextMenu implements ITextMenu, IOptionGroup, IMenuLifeCycle, IMenuContext{
 
 	public final static String DEFAULT_TEXT_LINE = "·-·-·-·-·-·-·-·";
