@@ -9,15 +9,18 @@ import pers.landriesnidis.ptm4j.option.Option;
  * @author Landriesnidis
  */
 public interface IMenuOptionsControl {
+
 	/**
 	 * 根据序号获取Option对象
 	 * @param index 索引
+	 * @return Option组中第index+1个Option对象
 	 */
 	Option getOption(int index);
 	
 	/**
 	 * 根据关键字获取Option对象
 	 * @param keyword Option对象的关键字
+	 * @return Option组中关键字相符为Option对象
 	 */
 	Option getOption(String keyword);
 	
@@ -29,7 +32,7 @@ public interface IMenuOptionsControl {
 	
 	/**
 	 * 获取TextMenu的选项组
-	 * @return 
+	 * @return TextMenu的选项组
 	 */
 	List<Option> getMenuOptions();
 }
