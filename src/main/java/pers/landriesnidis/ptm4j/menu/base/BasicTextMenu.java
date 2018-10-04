@@ -318,7 +318,7 @@ public class BasicTextMenu implements IBasicTextMenu, IOptionGroup, IMenuLifeCyc
 		return false;
 	}
 	
-	public final static BasicTextMenu createBaseTextMenuObject(Class<? extends BasicTextMenu> menuClass){
+	public final static BasicTextMenu createBasicTextMenuObject(Class<? extends BasicTextMenu> menuClass){
 		try {
 			try {
 				return (BasicTextMenu) Class.forName(menuClass.getName()).newInstance();

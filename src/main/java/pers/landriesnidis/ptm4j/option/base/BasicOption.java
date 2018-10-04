@@ -135,23 +135,23 @@ public class BasicOption implements IBasicOption {
 			break;
 		case MENU:
 			if(menuObject!=null){
-				sceneContext.startMenu(menuObject, this);
+				sceneContext.startMenu(menuObject, (Option) this);
 			}else{
-				sceneContext.startMenu(TextMenu.createTextMenuObject(getMenuClass()), this);
+				sceneContext.startMenu(TextMenu.createTextMenuObject(getMenuClass()), (Option) this);
 			}
 			break;
 		case MENU_ARGS:
 			if(menuObject!=null){
-				sceneContext.startMenu(menuObject, this, text.split(" "));
+				sceneContext.startMenu(menuObject, (Option) this, text.split(" "));
 			}else{
-				sceneContext.startMenu((TextMenu) TextMenu.createTextMenuObject(getMenuClass()), this, text.split(" "));
+				sceneContext.startMenu(TextMenu.createTextMenuObject(getMenuClass()), (Option) this, text.split(" "));
 			}
 			break;
 		case BACK:
-			sceneContext.returnToPreviousMenu(this, text.contains(" ")?text.split(" "):null);
+			sceneContext.returnToPreviousMenu((Option) this, text.contains(" ")?text.split(" "):null);
 			break;
 		case BACK_ROOT:
-			sceneContext.returnToRootMenu(this);
+			sceneContext.returnToRootMenu((Option) this);
 			break;
 		case RELOAD:
 			sceneContext.reloadMenu(text.split(" "));

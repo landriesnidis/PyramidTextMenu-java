@@ -1,15 +1,15 @@
 package pers.landriesnidis.ptm4j.scene.base;
 
-import java.util.LinkedList;
+import java.util.Stack;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
-import pers.landriesnidis.ptm4j.menu.base.BasicTextMenu;
+import pers.landriesnidis.ptm4j.menu.TextMenu;
 import pers.landriesnidis.ptm4j.menu.context.IMenuContext;
 import pers.landriesnidis.ptm4j.menu.events.BackEvent;
 import pers.landriesnidis.ptm4j.menu.events.LoadEvent;
 import pers.landriesnidis.ptm4j.menu.events.StartEvent;
 import pers.landriesnidis.ptm4j.menu.events.StopEvent;
-import pers.landriesnidis.ptm4j.option.base.BasicOption;
+import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.io.SceneReader;
 import pers.landriesnidis.ptm4j.scene.io.SceneWriter;
 
@@ -23,8 +23,8 @@ import pers.landriesnidis.ptm4j.scene.io.SceneWriter;
  *
  */
 public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
-	// TextMenu组
-	private LinkedList<BasicTextMenu> textMenuLinkedList = new LinkedList<BasicTextMenu>();
+	// TextMenu栈
+	private Stack<TextMenu> textMenus = new Stack<TextMenu>();
 	
 	// Scene信息读取器
 	private SceneReader reader;
@@ -56,39 +56,39 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		return this;
 	}
 	
-	public BasicTextMenu getRootMenu() {
-		return textMenuLinkedList.getFirst();
+	public TextMenu getRootMenu() {
+		return textMenus.firstElement();
 	}
 
-	public void setRootMenu(BasicTextMenu rootMenu) {
-		textMenuLinkedList.clear();
-		textMenuLinkedList.add(rootMenu);
+	public void setRootMenu(TextMenu rootMenu) {
+		textMenus.clear();
+		textMenus.push(rootMenu);
 
 		rootMenu.onLoad(new LoadEvent(this));
 		rootMenu.onStart(new StartEvent(this));
 	}
 
-	public BasicTextMenu getRunningMenu() {
-		return textMenuLinkedList.getLast();
+	public TextMenu getRunningMenu() {
+		return textMenus.peek();
 	}
 
-	public void setRunningMenu(BasicTextMenu runningMenu) {
-		textMenuLinkedList.add(runningMenu);
+	public void setRunningMenu(TextMenu runningMenu) {
+		textMenus.push(runningMenu);
 	}
 
-	public void startMenu(BasicTextMenu menu, BasicOption option) {
+	public void startMenu(TextMenu menu, Option option) {
 		startMenu(menu, option, null);
 	}
 
-	public void startMenu(BasicTextMenu menu, BasicOption option, String[] args) {
+	public void startMenu(TextMenu menu, Option option, String[] args) {
 		
 		// 保存原运行中的Menu
-		BasicTextMenu previousMenu = getRunningMenu();
+		TextMenu previousMenu = getRunningMenu();
 				
-		// 避免在TextMenu组中出现环
+		// 避免在TextMenu栈中出现环
 		// 如果新跳转的TextMenu对象存在于TextMenu组中，则从TextMenu组中删除后续(包含新TextMenu对象)
-		if(textMenuLinkedList.contains(menu)){
-			while(menu != textMenuLinkedList.removeLast());
+		if(textMenus.contains(menu)){
+			while(menu != textMenus.pop());
 		}
 		
 		// 切换Menu
@@ -123,24 +123,24 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		returnToPreviousMenu(null);
 	}
 
-	public void returnToPreviousMenu(BasicOption option) {
+	public void returnToPreviousMenu(Option option) {
 		returnToPreviousMenu(option, null);
 	}
 
-	public void returnToPreviousMenu(BasicOption option, String[] args) {
+	public void returnToPreviousMenu(Option option, String[] args) {
 		// 检测是否已是根Menu
 		if (getRunningMenu() == getRootMenu())
 			return;
 		
 		// 切换至上一级TextMenu并保存原运行中的Menu
-		BasicTextMenu menu = textMenuLinkedList.removeLast();
+		TextMenu menu = textMenus.pop();
 
 		// 原Menu触发onDestroy事件
 		menu.onUnload();
 		menu = null;
 		
 		// 如果返回的TextMenu设置了“返回时跳过”的属性，则继续向上一级TextMenu返回
-		if(textMenuLinkedList.getLast().isSkipMenuOnBack()){
+		if(textMenus.peek().isSkipMenuOnBack()){
 			returnToPreviousMenu(option, args);
 			return;
 		}
@@ -170,13 +170,13 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		getRunningMenu().onStart(startEvent);
 	}
 
-	public void returnToRootMenu(BasicOption option) {
+	public void returnToRootMenu(Option option) {
 		
 		// 如果当前已处于根TextMenu则什么也不做
-		if(textMenuLinkedList.size()<=1) return;
+		if(textMenus.size()<=1) return;
 		
 		// 切换TextMenu
-		BasicTextMenu menu = getRunningMenu();
+		TextMenu menu = getRunningMenu();
 		
 		// 原Menu触发onStop事件
 		menu.onStop(new StopEvent(this));
@@ -185,9 +185,9 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		menu = null;
 		
 		// 返回至根TextMenu
-		BasicTextMenu rootMenu = getRootMenu();
-		textMenuLinkedList.clear();
-		textMenuLinkedList.add(rootMenu);
+		TextMenu rootMenu = getRootMenu();
+		textMenus.clear();
+		textMenus.push(rootMenu);
 
 		// 创建BackEvent事件对象
 		BackEvent e = new BackEvent(this);
@@ -208,8 +208,8 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 
 	public void reloadMenu(String[] args) {
 		// 保存原Menu和上一层Menu，根据原Menu创建新的同类型Menu并替换
-		BasicTextMenu oldMenu = textMenuLinkedList.removeLast();
-		BasicTextMenu newMenu = BasicTextMenu.createBaseTextMenuObject(oldMenu.getClass());
+		TextMenu oldMenu = textMenus.pop();
+		TextMenu newMenu = TextMenu.createTextMenuObject(oldMenu.getClass());
 		setRunningMenu(newMenu);
 
 		// 创建LoadEvent事件对象
