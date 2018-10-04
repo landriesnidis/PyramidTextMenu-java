@@ -1,5 +1,6 @@
-package pers.landriesnidis.ptm4j.menu;
+package pers.landriesnidis.ptm4j.menu.base;
 
+import pers.landriesnidis.ptm4j.menu.TextMenu;
 import pers.landriesnidis.ptm4j.option.Option;
 
 /**

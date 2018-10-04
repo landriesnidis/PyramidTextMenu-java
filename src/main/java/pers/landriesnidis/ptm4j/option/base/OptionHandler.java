@@ -1,5 +1,6 @@
-package pers.landriesnidis.ptm4j.option;
+package pers.landriesnidis.ptm4j.option.base;
 
+import pers.landriesnidis.ptm4j.option.Option;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
 /**

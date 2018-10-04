@@ -1,4 +1,4 @@
-package pers.landriesnidis.ptm4j.menu;
+package pers.landriesnidis.ptm4j.menu.base;
 
 import pers.landriesnidis.ptm4j.menu.context.IMenuContext;
 import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
@@ -7,7 +7,7 @@ import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
  * TextMenu接口
  * @author Landriesnidis
  */
-public interface ITextMenu {
+public interface IBasicTextMenu {
 	
 	/**
 	 * 当接收到用户输入的信息会触发此方法（当TextMenu设置允许接收信息时才会被执行，即：setAllowReveiceText(true)）

@@ -5,6 +5,7 @@ import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
 /**
  * 加载事件类型
+ * @see BaseEvent
  * @author Landriesnidis
  *
  */

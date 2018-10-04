@@ -4,6 +4,7 @@ import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
 
 /**
  * 暂停事件类型
+ * @see BaseEvent
  * @author Landriesnidis
  *
  */

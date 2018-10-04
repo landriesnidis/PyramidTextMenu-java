@@ -1,4 +1,4 @@
-package pers.landriesnidis.ptm4j.option;
+package pers.landriesnidis.ptm4j.option.base;
 
 import pers.landriesnidis.ptm4j.enums.ActionType;
 import pers.landriesnidis.ptm4j.menu.TextMenu;
@@ -8,7 +8,7 @@ import pers.landriesnidis.ptm4j.scene.base.ISceneContext;
  * Option接口
  * @author Landriesnidis
  */
-public interface IOption {
+public interface IBasicOption {
 	
 	/**
 	 * 执行Option对象的预设功能
