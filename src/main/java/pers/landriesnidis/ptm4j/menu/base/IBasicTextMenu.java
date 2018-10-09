@@ -67,4 +67,11 @@ public interface IBasicTextMenu {
 	 */
 	String getMenuFormatString();
 	
+	/**
+	 * 设置生命周期的回调方法
+	 * 此方法主要是为脚本语言重写TextMenu生命周期方法而提供
+	 * 设置后会自动执行生命周期中的onCreate()方法
+	 * @param lifeCycleCallback 生命周期接口的实现
+	 */
+	void setMenuLifeCycleCallback(IMenuLifeCycle lifeCycleCallback);
 }

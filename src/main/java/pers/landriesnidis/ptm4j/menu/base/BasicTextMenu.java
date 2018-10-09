@@ -30,7 +30,7 @@ public class BasicTextMenu implements IBasicTextMenu, IOptionGroup, IMenuLifeCyc
 
 	public final static String DEFAULT_TEXT_LINE = "·-·-·-·-·-·-·-·";
 	
-	// 选择项
+	// 选择项列表
 	private List<Option> options;
 	// 标题
 	private String title;
@@ -42,6 +42,8 @@ public class BasicTextMenu implements IBasicTextMenu, IOptionGroup, IMenuLifeCyc
 	private boolean allowShowSerialNumber;
 	// 当从下一级TextMenu返回时跳过当前TextMenu直接返回至上一级
 	private boolean skipMenuOnBack;
+	// TextMenu生命周期接口的实现
+	private IMenuLifeCycle lifeCycleCallback;
 	
 	public BasicTextMenu() {
 		options = new ArrayList<Option>();
@@ -49,27 +51,46 @@ public class BasicTextMenu implements IBasicTextMenu, IOptionGroup, IMenuLifeCyc
 	}
 	
 	public void onCreate() {
-		
+		if(lifeCycleCallback!=null){
+			lifeCycleCallback.onCreate();
+			return;
+		}
 	}
 
 	public void onLoad(LoadEvent e) {
-		
+		if(lifeCycleCallback!=null){
+			lifeCycleCallback.onLoad(e);
+			return;
+		}
 	}
 	
 	public void onStart(StartEvent e) {
+		if(lifeCycleCallback!=null){
+			lifeCycleCallback.onStart(e);
+			return;
+		}
 		showMenu(e.getSceneContext(),null);
 	}
 
 	public void onStop(StopEvent e) {
-		
+		if(lifeCycleCallback!=null){
+			lifeCycleCallback.onStop(e);
+			return;
+		}
 	}
 
 	public void onBack(BackEvent e) {
-
+		if(lifeCycleCallback!=null){
+			lifeCycleCallback.onBack(e);
+			return;
+		}
 	}
 
 	public void onUnload() {
-		
+		if(lifeCycleCallback!=null){
+			lifeCycleCallback.onUnload();
+			return;
+		}
 	}
 
 	public void addOption(Option option) {
@@ -141,6 +162,7 @@ public class BasicTextMenu implements IBasicTextMenu, IOptionGroup, IMenuLifeCyc
 	}
 	
 	public void addMenuOption(String keyword, TextMenu menuObject) {
+		if(menuObject == null) return;
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(menuObject.getClass());
@@ -158,6 +180,7 @@ public class BasicTextMenu implements IBasicTextMenu, IOptionGroup, IMenuLifeCyc
 	}
 	
 	public void addArgsMenuOption(String keyword, TextMenu menuObject) {
+		if(menuObject == null) return;
 		Option option = new Option(this);
 		option.setKeyWord(keyword);
 		option.setMenuClass(menuObject.getClass());
@@ -331,5 +354,10 @@ public class BasicTextMenu implements IBasicTextMenu, IOptionGroup, IMenuLifeCyc
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void setMenuLifeCycleCallback(IMenuLifeCycle lifeCycleCallback) {
+		this.lifeCycleCallback = lifeCycleCallback;
+		lifeCycleCallback.onCreate();
 	}
 }

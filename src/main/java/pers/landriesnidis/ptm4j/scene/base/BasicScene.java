@@ -140,7 +140,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 		menu = null;
 		
 		// 如果返回的TextMenu设置了“返回时跳过”的属性，则继续向上一级TextMenu返回
-		if(textMenus.peek().isSkipMenuOnBack()){
+		if(getRunningMenu().isSkipMenuOnBack()){
 			returnToPreviousMenu(option, args);
 			return;
 		}

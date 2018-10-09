@@ -23,6 +23,7 @@ public interface IMenuLifeCycle {
 
 	/**
 	 * 当TextMenu开始执行时被触发
+	 * 默认会执行showMenu()输出目录信息
 	 * @param e 事件参数
 	 */
 	void onStart(StartEvent e);
