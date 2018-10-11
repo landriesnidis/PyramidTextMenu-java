@@ -7,6 +7,21 @@
 **PyramidTextMenu**（以下称**PTM**）是一个开源的层级文本菜单框架，使用Java语言，主要使用于创建命令行应用程序、客服机器人、文字游戏等场景。
 **PTM**提供了便捷、简明、多样的的层级文本菜单应用程序开发方法，这意味着开发者使用**PTM**即可在非常短的时间内开发出需要的层级菜单应用。
 
+
+---
+## 如何获取PyramidTextMenu？
+### 获取jar包
+开发者可通过引入jar包的方式使用**PTM**的完整功能。
+**PTM**最新版本的jar包发布在Github项目页面的release栏中，通过下方链接也快速跳转到该页面。
+
+获取最新版本jar包：https://github.com/landriesnidis/PyramidTextMenu-java/releases/latest
+
+### clone源代码到本地
+开发者也可通过git命令将项目clone到本地。
+```
+git clone https://github.com/landriesnidis/PyramidTextMenu-java.git
+```
+
 ---
 ## PyramidTextMenu框架优势
  - 开放源代码
