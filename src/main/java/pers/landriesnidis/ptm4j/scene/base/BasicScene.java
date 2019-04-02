@@ -57,6 +57,7 @@ public class BasicScene implements IBasicScene,IMenuSwitching,ISceneContext {
 	}
 	
 	public TextMenu getRootMenu() {
+		if(textMenus.isEmpty())return null;
 		return textMenus.firstElement();
 	}
 
